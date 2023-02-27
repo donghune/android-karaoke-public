@@ -1,33 +1,34 @@
 package com.github.donghune.presentation.popularity
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.github.donghune.domain.usecase.GetPopularitySongsUseCase
-import com.github.donghune.presentation.base.BaseViewModel
-import com.github.donghune.presentation.entity.PopularitySongModel
 import com.github.donghune.presentation.entity.toPopularitySongModel
-import com.github.donghune.presentation.state.LoadState
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class PopularityViewModel @Inject constructor(
     private val getPopularitySongsUseCase: GetPopularitySongsUseCase
-) : BaseViewModel() {
+) : ViewModel() {
 
-    private var _songList = MutableLiveData<List<PopularitySongModel>>(listOf())
-    val songList: LiveData<List<PopularitySongModel>>
-        get() = _songList
+    private val _uiState = MutableStateFlow<PopularityUiState>(PopularityUiState.Loading)
+    val uiState: StateFlow<PopularityUiState>
+        get() = _uiState
 
-    fun getPopularitySongList() {
-        getPopularitySongsUseCase()
-            .onStart { updateLoadState(LoadState.Loading) }
-            .map { list -> list.map { entity -> entity.toPopularitySongModel() } }
-            .onEach { _songList.postValue(it) }
-            .onCompletion { updateLoadState(LoadState.Complete) }
-            .catch { onError(it) }
-            .launchIn(viewModelScope)
+    init {
+        viewModelScope.launch {
+            try {
+                val popularitySongs = getPopularitySongsUseCase()
+                    .map { entity -> entity.toPopularitySongModel() }
+                _uiState.update { PopularityUiState.Success(popularitySongs) }
+            } catch (e: Exception) {
+                _uiState.update { PopularityUiState.Error(e) }
+            }
+        }
     }
 }

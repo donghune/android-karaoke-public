@@ -1,24 +1,33 @@
 package com.github.donghune.presentation.search
 
+import android.os.Bundle
 import android.util.Log
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.AutoCompleteTextView
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.github.donghune.R
+import com.github.donghune.databinding.SearchFragmentBinding
 import com.github.donghune.domain.entity.SearchType
-import com.github.donghune.presentation.R
 import com.github.donghune.presentation.adapter.SongRecyclerAdapter
 import com.github.donghune.presentation.base.BaseFragment
-import com.github.donghune.presentation.databinding.SearchFragmentBinding
+import com.github.donghune.presentation.delegate.autoCleared
+import com.github.donghune.presentation.dialog.GroupSelectDialogUiState
 import com.github.donghune.presentation.dialog.GroupSelectDialogViewModel
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
 import com.github.donghune.presentation.search.SearchViewModel.SearchType as Type
 
 @AndroidEntryPoint
-class SearchFragment : BaseFragment<SearchFragmentBinding>(R.layout.search_fragment) {
+class SearchFragment : BaseFragment() {
 
+    private var binding by autoCleared<SearchFragmentBinding>()
     private val viewModel: SearchViewModel by viewModels()
     private val dialogViewModel: GroupSelectDialogViewModel by viewModels()
 
@@ -33,49 +42,75 @@ class SearchFragment : BaseFragment<SearchFragmentBinding>(R.layout.search_fragm
         )
     }
 
-    override fun SearchFragmentBinding.onCreateView() {
-        recyclerSong.apply {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        binding = SearchFragmentBinding.inflate(inflater, container, false)
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        binding.recyclerSong.apply {
             adapter = recyclerViewAdapter
             layoutManager = LinearLayoutManager(context)
         }
 
-        (dropdownMenu.editText as? AutoCompleteTextView)?.apply {
+        (binding.dropdownMenu.editText as? AutoCompleteTextView)?.apply {
             setAdapter(searchTypeAdapter)
             setText(adapter.getItem(0).toString(), false)
         }
 
-        this@SearchFragment.viewModel.songList.observe(requireActivity()) {
-            recyclerViewAdapter.submitList(it)
-        }
-
-        dialogViewModel.items.observe(requireActivity()) {
-            Log.d(TAG, "onCreateView() called it = [$it]")
-
-            val items = it.keys.map { groupModel -> groupModel.name }.toTypedArray()
-            val values = it.values.toBooleanArray()
-
-            MaterialAlertDialogBuilder(requireContext())
-                .setTitle("추가할 그룹을 선택해주세요")
-                .setPositiveButton("완료") { dialog, _ -> dialog.dismiss() }
-                .setMultiChoiceItems(items, values) { _, index, value ->
-                    Log.d(TAG, "onClick: $index. $value")
+        lifecycleScope.launch {
+            viewModel.uiState.collect {
+                when (it) {
+                    is SearchUiState.Error -> loadingDialog.dismiss()
+                    SearchUiState.Loading -> loadingDialog.show()
+                    is SearchUiState.Success -> {
+                        loadingDialog.dismiss()
+                        recyclerViewAdapter.submitList(it.songs)
+                    }
                 }
-                .show()
+            }
         }
-    }
 
-    override fun SearchFragmentBinding.onViewCreated() {
-        fieldKeyword.editText?.addTextChangedListener {
+        lifecycleScope.launch {
+            dialogViewModel.uiState.collect {
+                when (it) {
+                    is GroupSelectDialogUiState.Error -> loadingDialog.dismiss()
+                    GroupSelectDialogUiState.Loading -> loadingDialog.show()
+                    is GroupSelectDialogUiState.Success -> {
+                        loadingDialog.dismiss()
+                        val items =
+                            it.groupList.keys.map { groupModel -> groupModel.name }.toTypedArray()
+                        val values = it.groupList.values.toBooleanArray()
+
+                        MaterialAlertDialogBuilder(requireContext())
+                            .setTitle("추가할 그룹을 선택해주세요")
+                            .setPositiveButton("완료") { dialog, _ -> dialog.dismiss() }
+                            .setMultiChoiceItems(items, values) { _, index, value ->
+                                Log.d(TAG, "onClick: $index. $value")
+                            }
+                            .show()
+                    }
+                }
+            }
+        }
+
+        binding.fieldKeyword.editText?.addTextChangedListener {
             searchSong(it.toString())
         }
-        dropdownMenu.editText?.addTextChangedListener {
-            searchSong(fieldKeyword.editText?.text.toString())
+
+        binding.dropdownMenu.editText?.addTextChangedListener {
+            searchSong(binding.fieldKeyword.editText?.text.toString())
         }
-        fieldKeyword.editText?.setText("")
+
+        binding.fieldKeyword.editText?.setText("")
     }
 
     private fun searchSong(keyword: String) {
-        Log.d(TAG, "searchSong() called  with: keyword = [$keyword]")
         val selectItem = (binding.dropdownMenu.editText?.text?.toString() ?: "")
 
         val searchType = when (val type = SearchType.values().find { it.korName == selectItem }) {

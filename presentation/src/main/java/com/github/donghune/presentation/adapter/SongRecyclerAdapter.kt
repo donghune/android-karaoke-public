@@ -4,8 +4,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.github.donghune.presentation.BR
-import com.github.donghune.presentation.databinding.ItemSongBinding
+import com.github.donghune.databinding.ItemSongBinding
 import com.github.donghune.presentation.dialog.GroupSelectDialogViewModel
 import com.github.donghune.presentation.entity.SongModel
 
@@ -19,8 +18,6 @@ class SongRecyclerAdapter(
         private val binding: ItemSongBinding
     ) : RecyclerView.ViewHolder(binding.root) {
         fun bind(item: SongModel) {
-            binding.setVariable(BR.song, item)
-            binding.setVariable(BR.dialogViewModel, groupSelectDialogViewModel)
         }
     }
 

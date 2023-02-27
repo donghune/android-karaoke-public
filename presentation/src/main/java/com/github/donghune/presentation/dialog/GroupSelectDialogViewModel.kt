@@ -1,35 +1,40 @@
 package com.github.donghune.presentation.dialog
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.SavedStateHandle
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.github.donghune.domain.usecase.GetGroupWithIncludeWhetherUseCase
-import com.github.donghune.presentation.base.BaseViewModel
-import com.github.donghune.presentation.entity.GroupModel
 import com.github.donghune.presentation.entity.toGroupModel
-import com.github.donghune.presentation.state.LoadState
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class GroupSelectDialogViewModel @Inject constructor(
+    stateHandle: SavedStateHandle,
     private val getGroupWithIncludeWhetherUseCase: GetGroupWithIncludeWhetherUseCase
-) : BaseViewModel() {
+) : ViewModel() {
 
-    private val _items = MutableLiveData<Map<GroupModel, Boolean>>()
-    val items: LiveData<Map<GroupModel, Boolean>>
-        get() = _items
+    private val songId = stateHandle.get<Int>("songId") ?: 0
 
-    fun getItems(songId: Int) {
-        val params = GetGroupWithIncludeWhetherUseCase.Params(songId)
+    private val _uiState =
+        MutableStateFlow<GroupSelectDialogUiState>(GroupSelectDialogUiState.Loading)
+    val uiState: StateFlow<GroupSelectDialogUiState> = _uiState
 
-        getGroupWithIncludeWhetherUseCase(params)
-            .onStart { updateLoadState(LoadState.Loading) }
-            .map { map -> map.mapKeys { it.key.toGroupModel() } }
-            .onEach { _items.postValue(it) }
-            .onCompletion { updateLoadState(LoadState.Complete) }
-            .catch { onError(it) }
-            .launchIn(viewModelScope)
+    init {
+        viewModelScope.launch {
+            try {
+                val params = GetGroupWithIncludeWhetherUseCase.Params(songId)
+
+                val result = getGroupWithIncludeWhetherUseCase(params)
+                val groupList = result.map { it.key.toGroupModel() to it.value }
+                _uiState.update { GroupSelectDialogUiState.Success(groupList.toMap()) }
+            } catch (e: Exception) {
+                _uiState.update { GroupSelectDialogUiState.Error(e) }
+            }
+        }
     }
 }

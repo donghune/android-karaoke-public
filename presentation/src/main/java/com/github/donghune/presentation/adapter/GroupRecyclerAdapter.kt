@@ -4,8 +4,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.github.donghune.presentation.BR
-import com.github.donghune.presentation.databinding.ItemGroupBinding
+import com.github.donghune.databinding.ItemGroupBinding
 import com.github.donghune.presentation.entity.GroupModel
 
 class GroupRecyclerAdapter : ListAdapter<GroupModel, GroupRecyclerAdapter.ViewHolder>(
@@ -16,7 +15,6 @@ class GroupRecyclerAdapter : ListAdapter<GroupModel, GroupRecyclerAdapter.ViewHo
         private val binding: ItemGroupBinding
     ) : RecyclerView.ViewHolder(binding.root) {
         fun bind(item: GroupModel) {
-            binding.setVariable(BR.group, item)
         }
     }
 
