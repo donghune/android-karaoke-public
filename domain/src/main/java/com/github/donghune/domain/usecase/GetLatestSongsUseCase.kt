@@ -10,9 +10,7 @@ class GetLatestSongsUseCase @Inject constructor(
     private val karaokeRepository: KaraokeRepository
 ) {
 
-    operator fun invoke(): Flow<List<SongEntity>> = flow {
-        emit(
-            karaokeRepository.getLatestList()
-        )
+    suspend operator fun invoke(): List<SongEntity> {
+        return karaokeRepository.getLatestList()
     }
 }

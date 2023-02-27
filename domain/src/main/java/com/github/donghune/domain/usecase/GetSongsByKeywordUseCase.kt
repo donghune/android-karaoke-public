@@ -2,8 +2,6 @@ package com.github.donghune.domain.usecase
 
 import com.github.donghune.domain.entity.SongEntity
 import com.github.donghune.domain.repo.KaraokeRepository
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
 
 class GetSongsByKeywordUseCase @Inject constructor(
@@ -15,13 +13,11 @@ class GetSongsByKeywordUseCase @Inject constructor(
         val limit: Int
     )
 
-    operator fun invoke(param: Param): Flow<List<SongEntity>> = flow {
-        emit(
-            repo.searchByKeyWord(
-                keyword = param.keyword,
-                offset = param.offset,
-                limit = param.limit
-            )
+    suspend operator fun invoke(param: Param): List<SongEntity> {
+        return repo.searchByKeyWord(
+            keyword = param.keyword,
+            offset = param.offset,
+            limit = param.limit
         )
     }
 }

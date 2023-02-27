@@ -2,8 +2,6 @@ package com.github.donghune.domain.usecase
 
 import com.github.donghune.domain.entity.GroupEntity
 import com.github.donghune.domain.repo.PlayListRepository
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
 
 class RemoveGroupUseCase @Inject constructor(
@@ -14,7 +12,7 @@ class RemoveGroupUseCase @Inject constructor(
         val groupEntity: GroupEntity
     )
 
-    operator fun invoke(params: Params): Flow<Unit> = flow {
-        emit(playListRepository.removeGroup(params.groupEntity))
+    suspend operator fun invoke(params: Params) {
+        playListRepository.removeGroup(params.groupEntity)
     }
 }
