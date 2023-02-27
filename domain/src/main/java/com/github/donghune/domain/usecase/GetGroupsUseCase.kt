@@ -7,11 +7,10 @@ import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
 
 class GetGroupsUseCase @Inject constructor(
-    private val playListRepository: PlayListRepository,
+    private val playListRepository: PlayListRepository
 ) {
 
     operator fun invoke(): Flow<List<GroupEntity>> = flow {
         emit(playListRepository.getGroupList())
     }
-
 }

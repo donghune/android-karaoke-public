@@ -7,10 +7,10 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.DividerItemDecoration.VERTICAL
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.github.donghune.presentation.R
-import com.github.donghune.presentation.databinding.DialogGroupAddBinding
-import com.github.donghune.presentation.databinding.PlaylistFragmentBinding
 import com.github.donghune.presentation.adapter.GroupRecyclerAdapter
 import com.github.donghune.presentation.base.BaseFragment
+import com.github.donghune.presentation.databinding.DialogGroupAddBinding
+import com.github.donghune.presentation.databinding.PlaylistFragmentBinding
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -35,10 +35,12 @@ class PlayListFragment : BaseFragment<PlaylistFragmentBinding>(R.layout.playlist
     override fun PlaylistFragmentBinding.onViewCreated() {
         floating.setOnClickListener {
             val binding: DialogGroupAddBinding =
-                DataBindingUtil.inflate(LayoutInflater.from(context),
+                DataBindingUtil.inflate(
+                    LayoutInflater.from(context),
                     R.layout.dialog_group_add,
                     null,
-                    false)
+                    false
+                )
 
             MaterialAlertDialogBuilder(it.context)
                 .setView(binding.root)
@@ -62,5 +64,4 @@ class PlayListFragment : BaseFragment<PlaylistFragmentBinding>(R.layout.playlist
         fun newInstance() = PlayListFragment()
         private val TAG = PlayListFragment::class.java.simpleName
     }
-
 }

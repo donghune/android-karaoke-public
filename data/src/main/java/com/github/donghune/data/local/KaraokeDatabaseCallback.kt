@@ -1,12 +1,8 @@
 package com.github.donghune.data.local
 
 import android.content.Context
-import android.util.Log
 import androidx.room.RoomDatabase
 import androidx.sqlite.db.SupportSQLiteDatabase
-import com.github.donghune.data.R
-import com.github.donghune.data.local.entity.RawSongEntity
-import com.google.gson.Gson
 
 class KaraokeDatabaseCallback(
     private val applicationContext: Context

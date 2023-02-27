@@ -7,15 +7,14 @@ import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
 
 class AddGroupUseCase @Inject constructor(
-    private val playListRepository: PlayListRepository,
+    private val playListRepository: PlayListRepository
 ) {
 
     data class Params(
-        val groupEntity: GroupEntity,
+        val groupEntity: GroupEntity
     )
 
     operator fun invoke(params: Params): Flow<Unit> = flow {
         emit(playListRepository.addGroup(params.groupEntity))
     }
-
 }

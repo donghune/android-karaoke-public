@@ -7,11 +7,11 @@ import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
 
 class GetGroupWithIncludeWhetherUseCase @Inject constructor(
-    private val playListRepository: PlayListRepository,
+    private val playListRepository: PlayListRepository
 ) {
 
     data class Params(
-        val songId: Int,
+        val songId: Int
     )
 
     operator fun invoke(params: Params): Flow<Map<GroupEntity, Boolean>> = flow {
@@ -21,5 +21,4 @@ class GetGroupWithIncludeWhetherUseCase @Inject constructor(
             }.toMap()
         )
     }
-
 }

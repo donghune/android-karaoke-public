@@ -7,13 +7,12 @@ import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
 
 class GetPopularitySongsUseCase @Inject constructor(
-    private val karaokeRepository: KaraokeRepository,
+    private val karaokeRepository: KaraokeRepository
 ) {
 
-    operator fun invoke() : Flow<List<PopularitySongEntity>> = flow {
+    operator fun invoke(): Flow<List<PopularitySongEntity>> = flow {
         emit(
             karaokeRepository.getPopularityList()
         )
     }
-
 }

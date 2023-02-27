@@ -13,7 +13,7 @@ import java.util.*
 import javax.inject.Inject
 
 class DBUpdatePreferencesRepository @Inject constructor(
-    @ApplicationContext private val context: Context,
+    @ApplicationContext private val context: Context
 ) {
 
     private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "settings")
@@ -46,5 +46,4 @@ class DBUpdatePreferencesRepository @Inject constructor(
         private val LATEST_UPDATED = longPreferencesKey("LATEST_UPDATED")
         private val POPULARITY_UPDATED = longPreferencesKey("POPULARITY_UPDATED")
     }
-
 }

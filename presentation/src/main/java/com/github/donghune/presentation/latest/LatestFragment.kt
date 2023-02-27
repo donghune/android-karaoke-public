@@ -4,9 +4,9 @@ import android.util.Log
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.github.donghune.presentation.R
-import com.github.donghune.presentation.databinding.LatestFragmentBinding
-import com.github.donghune.presentation.base.BaseFragment
 import com.github.donghune.presentation.adapter.SongRecyclerAdapter
+import com.github.donghune.presentation.base.BaseFragment
+import com.github.donghune.presentation.databinding.LatestFragmentBinding
 import com.github.donghune.presentation.dialog.GroupSelectDialogViewModel
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import dagger.hilt.android.AndroidEntryPoint
@@ -15,7 +15,7 @@ import dagger.hilt.android.AndroidEntryPoint
 class LatestFragment : BaseFragment<LatestFragmentBinding>(R.layout.latest_fragment) {
 
     private val viewModel: LatestViewModel by viewModels()
-    private val dialogViewModel : GroupSelectDialogViewModel by viewModels()
+    private val dialogViewModel: GroupSelectDialogViewModel by viewModels()
     private val recyclerAdapter: SongRecyclerAdapter by lazy { SongRecyclerAdapter(dialogViewModel) }
 
     override fun LatestFragmentBinding.onCreateView() {
@@ -52,5 +52,4 @@ class LatestFragment : BaseFragment<LatestFragmentBinding>(R.layout.latest_fragm
         fun newInstance() = LatestFragment()
         private val TAG = LatestFragment::class.java.simpleName
     }
-
 }

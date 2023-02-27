@@ -6,14 +6,13 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
 
-
 class GetSongsByKeywordUseCase @Inject constructor(
     val repo: KaraokeRepository
 ) {
     data class Param(
         val keyword: String,
         val offset: Int,
-        val limit: Int,
+        val limit: Int
     )
 
     operator fun invoke(param: Param): Flow<List<SongEntity>> = flow {

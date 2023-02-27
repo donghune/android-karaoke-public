@@ -7,10 +7,10 @@ import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.github.donghune.domain.entity.SearchType
-import com.github.donghune.presentation.databinding.SearchFragmentBinding
 import com.github.donghune.presentation.R
 import com.github.donghune.presentation.adapter.SongRecyclerAdapter
 import com.github.donghune.presentation.base.BaseFragment
+import com.github.donghune.presentation.databinding.SearchFragmentBinding
 import com.github.donghune.presentation.dialog.GroupSelectDialogViewModel
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import dagger.hilt.android.AndroidEntryPoint
@@ -26,9 +26,11 @@ class SearchFragment : BaseFragment<SearchFragmentBinding>(R.layout.search_fragm
         SongRecyclerAdapter(dialogViewModel)
     }
     private val searchTypeAdapter by lazy {
-        ArrayAdapter(requireContext(),
+        ArrayAdapter(
+            requireContext(),
             R.layout.item_expose_list,
-            SearchType.values().map { it.korName })
+            SearchType.values().map { it.korName }
+        )
     }
 
     override fun SearchFragmentBinding.onCreateView() {
@@ -77,9 +79,9 @@ class SearchFragment : BaseFragment<SearchFragmentBinding>(R.layout.search_fragm
         val selectItem = (binding.dropdownMenu.editText?.text?.toString() ?: "")
 
         val searchType = when (val type = SearchType.values().find { it.korName == selectItem }) {
-            SearchType.TITLE -> Type.Keyword("%${keyword}%", 0, 100)
-            SearchType.SINGER -> Type.Singer("%${keyword}%", 0, 100)
-            SearchType.TITLE_WITH_SINGER -> Type.TitleWithSinger("%${keyword}%", 0, 100)
+            SearchType.TITLE -> Type.Keyword("%$keyword%", 0, 100)
+            SearchType.SINGER -> Type.Singer("%$keyword%", 0, 100)
+            SearchType.TITLE_WITH_SINGER -> Type.TitleWithSinger("%$keyword%", 0, 100)
             else -> throw UnsupportedOperationException("Unsupported search type : $type")
         }
 
@@ -90,5 +92,4 @@ class SearchFragment : BaseFragment<SearchFragmentBinding>(R.layout.search_fragm
         fun newInstance() = SearchFragment()
         private val TAG = SearchFragment::class.java.simpleName
     }
-
 }

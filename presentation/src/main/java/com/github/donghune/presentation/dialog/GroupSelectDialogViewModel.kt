@@ -14,7 +14,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class GroupSelectDialogViewModel @Inject constructor(
-    private val getGroupWithIncludeWhetherUseCase: GetGroupWithIncludeWhetherUseCase,
+    private val getGroupWithIncludeWhetherUseCase: GetGroupWithIncludeWhetherUseCase
 ) : BaseViewModel() {
 
     private val _items = MutableLiveData<Map<GroupModel, Boolean>>()
@@ -32,5 +32,4 @@ class GroupSelectDialogViewModel @Inject constructor(
             .catch { onError(it) }
             .launchIn(viewModelScope)
     }
-
 }

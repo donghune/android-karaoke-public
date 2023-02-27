@@ -13,7 +13,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class LatestViewModel @Inject constructor(
-    private val getLatestSongsUseCase: GetLatestSongsUseCase,
+    private val getLatestSongsUseCase: GetLatestSongsUseCase
 ) : BaseViewModel() {
 
     private var _songList = MutableLiveData<List<SongModel>>(listOf())
@@ -33,5 +33,4 @@ class LatestViewModel @Inject constructor(
     companion object {
         private val TAG = LatestViewModel::class.java.simpleName
     }
-
 }

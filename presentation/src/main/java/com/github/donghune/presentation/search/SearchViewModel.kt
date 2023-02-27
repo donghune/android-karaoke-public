@@ -17,7 +17,7 @@ import javax.inject.Inject
 class SearchViewModel @Inject constructor(
     private val getSongsByKeywordUseCase: GetSongsByKeywordUseCase,
     private val getSongsBySingerUseCase: GetSongsBySingerUseCase,
-    private val getSongsByTitleWithSingerUseCase: GetSongsByTitleWithSingerUseCase,
+    private val getSongsByTitleWithSingerUseCase: GetSongsByTitleWithSingerUseCase
 ) : BaseViewModel() {
 
     private var _songList = MutableLiveData<List<SongModel>>(listOf())
@@ -68,5 +68,4 @@ class SearchViewModel @Inject constructor(
     companion object {
         private val TAG = SearchViewModel::class.java.simpleName
     }
-
 }

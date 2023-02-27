@@ -30,7 +30,7 @@ abstract class BaseViewModel : ViewModel() {
 
     protected fun <T> Flow<T>.asLiveData(
         context: CoroutineContext = EmptyCoroutineContext,
-        timeoutInMs: Long = 5000L,
+        timeoutInMs: Long = 5000L
     ): LiveData<T> = liveData(context, timeoutInMs) {
         catch { onError(it) }.collect { emit(it) }
     }

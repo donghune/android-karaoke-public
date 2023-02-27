@@ -28,5 +28,5 @@ abstract class NetworkServiceModule {
     @Singleton
     abstract fun bindKaraokeService(
         karaokeTJService: KaraokeTJService
-    ) : KaraokeService
+    ): KaraokeService
 }

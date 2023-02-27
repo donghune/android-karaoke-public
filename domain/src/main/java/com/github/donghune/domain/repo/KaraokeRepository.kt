@@ -13,8 +13,7 @@ interface KaraokeRepository {
 
     suspend fun searchByTitleWithSinger(singing: String, offset: Int, limit: Int): List<SongEntity>
 
-    suspend fun getPopularityList() : List<PopularitySongEntity>
+    suspend fun getPopularityList(): List<PopularitySongEntity>
 
-    suspend fun getLatestList() : List<SongEntity>
-
+    suspend fun getLatestList(): List<SongEntity>
 }

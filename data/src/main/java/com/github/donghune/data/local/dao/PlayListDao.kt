@@ -10,12 +10,11 @@ import com.github.donghune.data.local.table.PlayListPref
 interface PlayListDao {
 
     @Query("SELECT * FROM playlist WHERE groupId == :groupId")
-    suspend fun getPlayList(groupId : Int): List<PlayListPref>
+    suspend fun getPlayList(groupId: Int): List<PlayListPref>
 
     @Insert
     suspend fun addSongToPlayerList(playListPref: PlayListPref)
 
     @Delete
     suspend fun removeSongToPlayList(playListPref: PlayListPref)
-
 }

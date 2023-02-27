@@ -14,7 +14,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class PopularityViewModel @Inject constructor(
-    private val getPopularitySongsUseCase: GetPopularitySongsUseCase,
+    private val getPopularitySongsUseCase: GetPopularitySongsUseCase
 ) : BaseViewModel() {
 
     private var _songList = MutableLiveData<List<PopularitySongModel>>(listOf())
@@ -30,5 +30,4 @@ class PopularityViewModel @Inject constructor(
             .catch { onError(it) }
             .launchIn(viewModelScope)
     }
-
 }

@@ -14,63 +14,63 @@ object UseCaseModule {
 
     @Provides
     fun provideAddGroupUseCase(
-        playListRepository: PlayListRepository,
+        playListRepository: PlayListRepository
     ): AddGroupUseCase {
         return AddGroupUseCase(playListRepository)
     }
 
     @Provides
     fun provideGetGroupsUseCase(
-        playListRepository: PlayListRepository,
+        playListRepository: PlayListRepository
     ): GetGroupsUseCase {
         return GetGroupsUseCase(playListRepository)
     }
 
     @Provides
     fun provideGetGroupWithIncludeWhetherUseCase(
-        playListRepository: PlayListRepository,
+        playListRepository: PlayListRepository
     ): GetGroupWithIncludeWhetherUseCase {
         return GetGroupWithIncludeWhetherUseCase(playListRepository)
     }
 
     @Provides
     fun provideGetLatestSongsUseCase(
-        karaokeRepository: KaraokeRepository,
+        karaokeRepository: KaraokeRepository
     ): GetLatestSongsUseCase {
         return GetLatestSongsUseCase(karaokeRepository)
     }
 
     @Provides
     fun provideGetPopularitySongsUseCase(
-        karaokeRepository: KaraokeRepository,
+        karaokeRepository: KaraokeRepository
     ): GetPopularitySongsUseCase {
         return GetPopularitySongsUseCase(karaokeRepository)
     }
 
     @Provides
     fun provideGetSongsByKeywordUseCase(
-        karaokeRepository: KaraokeRepository,
+        karaokeRepository: KaraokeRepository
     ): GetSongsByKeywordUseCase {
         return GetSongsByKeywordUseCase(karaokeRepository)
     }
 
     @Provides
     fun provideGetSongsBySingerUseCase(
-        karaokeRepository: KaraokeRepository,
+        karaokeRepository: KaraokeRepository
     ): GetSongsBySingerUseCase {
         return GetSongsBySingerUseCase(karaokeRepository)
     }
 
     @Provides
     fun provideGetSongsByTitleWithSingerUseCase(
-        karaokeRepository: KaraokeRepository,
+        karaokeRepository: KaraokeRepository
     ): GetSongsByTitleWithSingerUseCase {
         return GetSongsByTitleWithSingerUseCase(karaokeRepository)
     }
 
     @Provides
     fun provideRemoveGroupUseCase(
-        playListRepository: PlayListRepository,
+        playListRepository: PlayListRepository
     ): RemoveGroupUseCase {
         return RemoveGroupUseCase(playListRepository)
     }

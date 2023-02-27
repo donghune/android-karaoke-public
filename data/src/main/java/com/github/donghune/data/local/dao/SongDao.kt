@@ -44,5 +44,4 @@ interface SongDao {
 
     @Query("DELETE FROM latest_songs")
     suspend fun clearLatestSongList()
-
 }

@@ -12,6 +12,4 @@ interface PlayListRepository {
     suspend fun addGroup(groupEntity: GroupEntity)
 
     suspend fun removeGroup(groupEntity: GroupEntity)
-
-
 }

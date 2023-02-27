@@ -13,7 +13,7 @@ class GroupRecyclerAdapter : ListAdapter<GroupModel, GroupRecyclerAdapter.ViewHo
 ) {
 
     class ViewHolder(
-        private val binding: ItemGroupBinding,
+        private val binding: ItemGroupBinding
     ) : RecyclerView.ViewHolder(binding.root) {
         fun bind(item: GroupModel) {
             binding.setVariable(BR.group, item)
@@ -33,5 +33,4 @@ class GroupRecyclerAdapter : ListAdapter<GroupModel, GroupRecyclerAdapter.ViewHo
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.bind(getItem(position))
     }
-
 }

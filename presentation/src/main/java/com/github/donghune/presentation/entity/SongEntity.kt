@@ -6,7 +6,7 @@ import com.github.donghune.domain.entity.SongEntity
 data class SongModel(
     val id: Int,
     val title: String,
-    val singer: String,
+    val singer: String
 ) {
     companion object {
         fun diffCallback() = object : DiffUtil.ItemCallback<SongModel>() {

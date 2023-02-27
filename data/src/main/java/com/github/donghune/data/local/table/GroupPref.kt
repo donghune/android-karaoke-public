@@ -6,7 +6,7 @@ import androidx.room.PrimaryKey
 
 @Entity(tableName = "groups")
 data class GroupPref(
-    @ColumnInfo(name = "name") val name: String,
+    @ColumnInfo(name = "name") val name: String
 ) {
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "id")

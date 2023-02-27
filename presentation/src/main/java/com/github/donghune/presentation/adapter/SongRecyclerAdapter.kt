@@ -10,13 +10,13 @@ import com.github.donghune.presentation.dialog.GroupSelectDialogViewModel
 import com.github.donghune.presentation.entity.SongModel
 
 class SongRecyclerAdapter(
-    private val dialogViewModel: GroupSelectDialogViewModel,
+    private val dialogViewModel: GroupSelectDialogViewModel
 ) :
     ListAdapter<SongModel, SongRecyclerAdapter.ViewHolder>(SongModel.diffCallback()) {
 
     class ViewHolder(
         private val groupSelectDialogViewModel: GroupSelectDialogViewModel,
-        private val binding: ItemSongBinding,
+        private val binding: ItemSongBinding
     ) : RecyclerView.ViewHolder(binding.root) {
         fun bind(item: SongModel) {
             binding.setVariable(BR.song, item)
@@ -42,5 +42,4 @@ class SongRecyclerAdapter(
     companion object {
         private val TAG = SongRecyclerAdapter::class.java.simpleName
     }
-
 }

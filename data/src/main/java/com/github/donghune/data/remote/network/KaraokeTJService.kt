@@ -1,8 +1,8 @@
 package com.github.donghune.data.remote.network
 
-import com.github.donghune.domain.entity.SearchType
 import com.github.donghune.data.remote.response.PopularitySongResponse
 import com.github.donghune.data.remote.response.SongResponse
+import com.github.donghune.domain.entity.SearchType
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import org.jsoup.Jsoup
@@ -52,5 +52,4 @@ class KaraokeTJService @Inject constructor() : KaraokeService {
             .filter { it.size >= 3 }
             .toList()
     }
-
 }

@@ -7,7 +7,7 @@ import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
 
 class RemoveGroupUseCase @Inject constructor(
-    private val playListRepository: PlayListRepository,
+    private val playListRepository: PlayListRepository
 ) {
 
     data class Params(
@@ -17,5 +17,4 @@ class RemoveGroupUseCase @Inject constructor(
     operator fun invoke(params: Params): Flow<Unit> = flow {
         emit(playListRepository.removeGroup(params.groupEntity))
     }
-
 }

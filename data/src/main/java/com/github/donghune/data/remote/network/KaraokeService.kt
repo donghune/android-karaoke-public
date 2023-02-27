@@ -1,8 +1,8 @@
 package com.github.donghune.data.remote.network
 
-import com.github.donghune.domain.entity.SearchType
-import com.github.donghune.data.remote.response.SongResponse
 import com.github.donghune.data.remote.response.PopularitySongResponse
+import com.github.donghune.data.remote.response.SongResponse
+import com.github.donghune.domain.entity.SearchType
 
 interface KaraokeService {
 
@@ -16,5 +16,4 @@ interface KaraokeService {
     suspend fun getPopularSongList(): List<PopularitySongResponse>
 
     suspend fun getNewSongList(): List<SongResponse>
-
 }

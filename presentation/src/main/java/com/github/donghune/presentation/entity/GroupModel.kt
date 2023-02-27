@@ -6,7 +6,7 @@ import com.github.donghune.domain.entity.GroupEntity
 data class GroupModel(
     val id: Int,
     val name: String,
-    val songNumbers: List<Int>,
+    val songNumbers: List<Int>
 ) {
 
     companion object {

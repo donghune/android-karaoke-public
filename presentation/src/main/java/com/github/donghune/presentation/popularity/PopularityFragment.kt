@@ -4,9 +4,9 @@ import android.util.Log
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.github.donghune.presentation.R
-import com.github.donghune.presentation.databinding.PopularityFragmentBinding
 import com.github.donghune.presentation.adapter.PopularitySongRecyclerAdapter
 import com.github.donghune.presentation.base.BaseFragment
+import com.github.donghune.presentation.databinding.PopularityFragmentBinding
 import com.github.donghune.presentation.dialog.GroupSelectDialogViewModel
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import dagger.hilt.android.AndroidEntryPoint
@@ -14,8 +14,8 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class PopularityFragment : BaseFragment<PopularityFragmentBinding>(R.layout.popularity_fragment) {
 
-    private val viewModel : PopularityViewModel by viewModels()
-    private val dialogViewModel : GroupSelectDialogViewModel by viewModels()
+    private val viewModel: PopularityViewModel by viewModels()
+    private val dialogViewModel: GroupSelectDialogViewModel by viewModels()
     private val recyclerAdapter: PopularitySongRecyclerAdapter by lazy { PopularitySongRecyclerAdapter(dialogViewModel) }
 
     override fun PopularityFragmentBinding.onCreateView() {
@@ -52,5 +52,4 @@ class PopularityFragment : BaseFragment<PopularityFragmentBinding>(R.layout.popu
         fun newInstance() = PopularityFragment()
         private val TAG = PopularityFragment::class.java.simpleName
     }
-
 }

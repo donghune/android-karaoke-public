@@ -5,12 +5,12 @@ import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
 
 class GetSongsBySingerUseCase @Inject constructor(
-    val repo: KaraokeRepository,
+    val repo: KaraokeRepository
 ) {
     data class Param(
         val singing: String,
         val offset: Int,
-        val limit: Int,
+        val limit: Int
     )
 
     operator fun invoke(param: Param) = flow {

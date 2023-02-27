@@ -19,7 +19,7 @@ import javax.inject.Inject
 class PlayListViewModel @Inject constructor(
     private val getGroupsUseCase: GetGroupsUseCase,
     private val addGroupUseCase: AddGroupUseCase,
-    private val removeGroupUseCase: RemoveGroupUseCase,
+    private val removeGroupUseCase: RemoveGroupUseCase
 ) : BaseViewModel() {
 
     private var _playerList = MutableLiveData<List<GroupModel>>()
@@ -55,5 +55,4 @@ class PlayListViewModel @Inject constructor(
             .catch { onError(it) }
             .launchIn(viewModelScope)
     }
-
 }

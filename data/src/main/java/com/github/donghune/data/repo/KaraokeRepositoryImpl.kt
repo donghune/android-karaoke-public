@@ -15,13 +15,13 @@ import javax.inject.Inject
 class KaraokeRepositoryImpl @Inject constructor(
     private val songDao: SongDao,
     private val karaokeService: KaraokeService,
-    private val preferencesRepository: DBUpdatePreferencesRepository,
+    private val preferencesRepository: DBUpdatePreferencesRepository
 ) : KaraokeRepository {
 
     override suspend fun searchByKeyWord(
         keyword: String,
         offset: Int,
-        limit: Int,
+        limit: Int
     ): List<SongEntity> {
         return songDao.getSongListByKeyWord(keyword, offset, limit)
             .map { it.toSongEntity() }
@@ -30,7 +30,7 @@ class KaraokeRepositoryImpl @Inject constructor(
     override suspend fun searchByNumber(
         id: Int,
         offset: Int,
-        limit: Int,
+        limit: Int
     ): List<SongEntity> {
         return songDao.getSongListByNumber(id, offset, limit)
             .map { it.toSongEntity() }
@@ -39,7 +39,7 @@ class KaraokeRepositoryImpl @Inject constructor(
     override suspend fun searchBySinger(
         singing: String,
         offset: Int,
-        limit: Int,
+        limit: Int
     ): List<SongEntity> {
         return songDao.getSongListBySinger(singing, offset, limit)
             .map { it.toSongEntity() }
@@ -48,7 +48,7 @@ class KaraokeRepositoryImpl @Inject constructor(
     override suspend fun searchByTitleWithSinger(
         keyword: String,
         offset: Int,
-        limit: Int,
+        limit: Int
     ): List<SongEntity> {
         return songDao.getSongListByTitleWithSinger(keyword, offset, limit)
             .map { it.toSongEntity() }
@@ -56,8 +56,10 @@ class KaraokeRepositoryImpl @Inject constructor(
 
     override suspend fun getPopularityList(): List<PopularitySongEntity> {
         val now = dateFormat.format(Calendar.getInstance().time)
-        val updated = dateFormat.format(Calendar.getInstance()
-            .apply { timeInMillis = preferencesRepository.popularityUpdatedFlow.first() }.time)
+        val updated = dateFormat.format(
+            Calendar.getInstance()
+                .apply { timeInMillis = preferencesRepository.popularityUpdatedFlow.first() }.time
+        )
 
         Log.d(TAG, "getPopularityList: $now $updated")
 
@@ -76,8 +78,10 @@ class KaraokeRepositoryImpl @Inject constructor(
 
     override suspend fun getLatestList(): List<SongEntity> {
         val now = dateFormat.format(Calendar.getInstance().time)
-        val updated = dateFormat.format(Calendar.getInstance()
-            .apply { timeInMillis = preferencesRepository.latestUpdatedFlow.first() }.time)
+        val updated = dateFormat.format(
+            Calendar.getInstance()
+                .apply { timeInMillis = preferencesRepository.latestUpdatedFlow.first() }.time
+        )
 
         val data = songDao.getLatestSongList().map { it.toSongEntity() }
 

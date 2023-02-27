@@ -20,6 +20,4 @@ interface GroupDao {
 
     @Delete
     suspend fun removeGroup(groupPref: GroupPref)
-
-
 }

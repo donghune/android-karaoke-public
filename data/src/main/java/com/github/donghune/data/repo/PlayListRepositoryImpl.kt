@@ -11,7 +11,7 @@ import javax.inject.Inject
 
 class PlayListRepositoryImpl @Inject constructor(
     private val playListDao: PlayListDao,
-    private val groupDao: GroupDao,
+    private val groupDao: GroupDao
 ) : PlayListRepository {
 
     override suspend fun getGroupList(): List<GroupEntity> {

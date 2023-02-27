@@ -7,7 +7,7 @@ data class PopularitySongModel(
     val rank: Int,
     val id: Int,
     val title: String,
-    val singing: String,
+    val singing: String
 ) {
     fun toKaraokeNumber(): String {
         return String.format("%05d", id)
@@ -17,12 +17,12 @@ data class PopularitySongModel(
         fun diffCallback() = object : DiffUtil.ItemCallback<PopularitySongModel>() {
             override fun areItemsTheSame(
                 oldItem: PopularitySongModel,
-                newItem: PopularitySongModel,
+                newItem: PopularitySongModel
             ): Boolean = oldItem.id == newItem.id
 
             override fun areContentsTheSame(
                 oldItem: PopularitySongModel,
-                newItem: PopularitySongModel,
+                newItem: PopularitySongModel
             ): Boolean = oldItem == newItem
         }
 

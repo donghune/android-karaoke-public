@@ -33,5 +33,4 @@ abstract class BaseFragment<VDB : ViewDataBinding>(
 
     open fun VDB.onCreateView() = Unit
     open fun VDB.onViewCreated() = Unit
-
 }
