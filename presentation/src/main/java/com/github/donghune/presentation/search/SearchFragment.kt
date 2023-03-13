@@ -1,24 +1,25 @@
 package com.github.donghune.presentation.search
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ArrayAdapter
-import android.widget.AutoCompleteTextView
+import androidx.core.content.res.ResourcesCompat
+import androidx.core.view.isVisible
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
-import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.DividerItemDecoration
 import com.github.donghune.R
 import com.github.donghune.databinding.SearchFragmentBinding
-import com.github.donghune.domain.entity.SearchType
 import com.github.donghune.presentation.adapter.SongRecyclerAdapter
 import com.github.donghune.presentation.base.BaseFragment
 import com.github.donghune.presentation.delegate.autoCleared
-import com.github.donghune.presentation.dialog.GroupSelectDialogUiState
-import com.github.donghune.presentation.dialog.GroupSelectDialogViewModel
+import com.github.donghune.presentation.dialog.PlayListSelectDialogUiState
+import com.github.donghune.presentation.dialog.PlayListSelectDialogViewModel
+import com.github.donghune.presentation.entity.PlayListModel
+import com.github.donghune.presentation.latest.LatestActivity
+import com.github.donghune.presentation.popularity.PopularityActivity
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
@@ -29,16 +30,21 @@ class SearchFragment : BaseFragment() {
 
     private var binding by autoCleared<SearchFragmentBinding>()
     private val viewModel: SearchViewModel by viewModels()
-    private val dialogViewModel: GroupSelectDialogViewModel by viewModels()
+    private val dialogViewModel: PlayListSelectDialogViewModel by viewModels()
 
-    private val recyclerViewAdapter: SongRecyclerAdapter by lazy {
-        SongRecyclerAdapter(dialogViewModel)
+    private val latestAdapter: SongRecyclerAdapter by lazy {
+        SongRecyclerAdapter(
+            openOnClickListener = dialogViewModel::getPlayListWithIncludeWhether
+        )
     }
-    private val searchTypeAdapter by lazy {
-        ArrayAdapter(
-            requireContext(),
-            R.layout.item_expose_list,
-            SearchType.values().map { it.korName }
+    private val searchAdapter: SongRecyclerAdapter by lazy {
+        SongRecyclerAdapter(
+            openOnClickListener = dialogViewModel::getPlayListWithIncludeWhether
+        )
+    }
+    private val popularityAdapter: SongRecyclerAdapter by lazy {
+        SongRecyclerAdapter(
+            openOnClickListener = dialogViewModel::getPlayListWithIncludeWhether
         )
     }
 
@@ -53,14 +59,32 @@ class SearchFragment : BaseFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.recyclerSong.apply {
-            adapter = recyclerViewAdapter
-            layoutManager = LinearLayoutManager(context)
+        binding.recyclerLatestSong.apply {
+            adapter = latestAdapter
+            addItemDecoration(
+                DividerItemDecoration(
+                    requireContext(),
+                    DividerItemDecoration.VERTICAL
+                )
+            )
         }
-
-        (binding.dropdownMenu.editText as? AutoCompleteTextView)?.apply {
-            setAdapter(searchTypeAdapter)
-            setText(adapter.getItem(0).toString(), false)
+        binding.recyclerPopularitySong.apply {
+            adapter = popularityAdapter
+            addItemDecoration(
+                DividerItemDecoration(
+                    requireContext(),
+                    DividerItemDecoration.VERTICAL
+                )
+            )
+        }
+        binding.recyclerSearchResults.apply {
+            adapter = searchAdapter
+            addItemDecoration(
+                DividerItemDecoration(
+                    requireContext(),
+                    DividerItemDecoration.VERTICAL
+                )
+            )
         }
 
         lifecycleScope.launch {
@@ -68,10 +92,38 @@ class SearchFragment : BaseFragment() {
                 when (it) {
                     is SearchUiState.Error -> loadingDialog.dismiss()
                     SearchUiState.Loading -> loadingDialog.show()
-                    is SearchUiState.Success -> {
+                    is SearchUiState.InitLoad -> {
                         loadingDialog.dismiss()
-                        recyclerViewAdapter.submitList(it.songs)
+                        binding.recyclerSearchResults.isVisible = false
+                        binding.layoutRecommend.isVisible = true
+                        latestAdapter.submitList(it.latestSongs)
+                        popularityAdapter.submitList(it.popularitySongs)
                     }
+                    is SearchUiState.SearchResult -> {
+                        loadingDialog.dismiss()
+                        binding.recyclerSearchResults.isVisible = true
+                        binding.layoutRecommend.isVisible = false
+                        searchAdapter.submitList(it.searchSongs)
+                        binding.textSearchEmptyMessage.isVisible = it.searchSongs.isEmpty()
+                    }
+                }
+            }
+        }
+
+        lifecycleScope.launch {
+            viewModel.searchType.collect {
+                when (it) {
+                    SearchViewModel.SearchType.TITLE -> R.drawable.baseline_title_24
+                    SearchViewModel.SearchType.SINGER -> R.drawable.baseline_person_24
+                    SearchViewModel.SearchType.TITLE_WITH_SINGER -> R.drawable.baseline_title_24
+                }.also { drawableId ->
+                    binding.imageSearchType.setBackgroundDrawable(
+                        ResourcesCompat.getDrawable(
+                            resources,
+                            drawableId,
+                            null
+                        )
+                    )
                 }
             }
         }
@@ -79,48 +131,57 @@ class SearchFragment : BaseFragment() {
         lifecycleScope.launch {
             dialogViewModel.uiState.collect {
                 when (it) {
-                    is GroupSelectDialogUiState.Error -> loadingDialog.dismiss()
-                    GroupSelectDialogUiState.Loading -> loadingDialog.show()
-                    is GroupSelectDialogUiState.Success -> {
+                    is PlayListSelectDialogUiState.Empty -> loadingDialog.dismiss()
+                    is PlayListSelectDialogUiState.Error -> loadingDialog.dismiss()
+                    PlayListSelectDialogUiState.Loading -> loadingDialog.show()
+                    is PlayListSelectDialogUiState.Success -> {
                         loadingDialog.dismiss()
-                        val items =
-                            it.groupList.keys.map { groupModel -> groupModel.name }.toTypedArray()
-                        val values = it.groupList.values.toBooleanArray()
-
                         MaterialAlertDialogBuilder(requireContext())
                             .setTitle("추가할 그룹을 선택해주세요")
                             .setPositiveButton("완료") { dialog, _ -> dialog.dismiss() }
-                            .setMultiChoiceItems(items, values) { _, index, value ->
-                                Log.d(TAG, "onClick: $index. $value")
+                            .setMultiChoiceItems(
+                                it.playListList.keys.map(PlayListModel::name).toTypedArray(),
+                                it.playListList.values.toBooleanArray()
+                            ) { _, index, value ->
+                                dialogViewModel.setPlayListForSong(
+                                    songId = it.songId,
+                                    playListId = it.playListList.keys.toList()[index].id,
+                                    isChecked = value
+                                )
                             }
+                            .setOnDismissListener { dialogViewModel.dismissDialog() }
                             .show()
                     }
                 }
             }
         }
 
-        binding.fieldKeyword.editText?.addTextChangedListener {
-            searchSong(it.toString())
+        binding.imageSearchType.setOnClickListener {
+            viewModel.updateSearchType(viewModel.searchType.value.next())
+            searchSong(viewModel.searchType.value, binding.fieldSearch.text.toString())
         }
 
-        binding.dropdownMenu.editText?.addTextChangedListener {
-            searchSong(binding.fieldKeyword.editText?.text.toString())
+        binding.fieldSearch.addTextChangedListener {
+            searchSong(viewModel.searchType.value, it.toString())
         }
 
-        binding.fieldKeyword.editText?.setText("")
+        binding.textPopularityTitleViewAll.setOnClickListener {
+            PopularityActivity.start(requireContext())
+        }
+
+        binding.textLatestTitleViewAll.setOnClickListener {
+            LatestActivity.start(requireContext())
+        }
+
+        binding.fieldSearch.setText("")
+        searchSong(viewModel.searchType.value, binding.fieldSearch.text.toString())
     }
 
-    private fun searchSong(keyword: String) {
-        val selectItem = (binding.dropdownMenu.editText?.text?.toString() ?: "")
-
-        val searchType = when (val type = SearchType.values().find { it.korName == selectItem }) {
-            SearchType.TITLE -> Type.Keyword("%$keyword%", 0, 100)
-            SearchType.SINGER -> Type.Singer("%$keyword%", 0, 100)
-            SearchType.TITLE_WITH_SINGER -> Type.TitleWithSinger("%$keyword%", 0, 100)
-            else -> throw UnsupportedOperationException("Unsupported search type : $type")
+    private fun searchSong(searchType: Type, keyword: String) {
+        if (keyword.isEmpty()) {
+            return
         }
-
-        viewModel.search(searchType)
+        viewModel.search(searchType, "%$keyword%")
     }
 
     companion object {

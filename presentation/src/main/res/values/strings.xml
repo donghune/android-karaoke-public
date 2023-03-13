@@ -1,9 +1,9 @@
 <resources>
     <string name="app_name">내손의 노래방</string>
     <string name="label_latest">최신 노래</string>
-    <string name="label_playlist">플레이 리스트</string>
+    <string name="label_playlist">애창곡</string>
     <string name="label_popularity">인기 차트</string>
-    <string name="label_search">노래 검색</string>
+    <string name="label_home">노래 검색</string>
     <string name="search_type">검색방법</string>
     <string name="search_hint">검색어를 입력해주세요</string>
     <string name="floating_description">add</string>

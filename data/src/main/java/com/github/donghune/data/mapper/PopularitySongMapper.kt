@@ -1,21 +1,21 @@
 package com.github.donghune.data.mapper
 
-import com.github.donghune.data.local.table.PopularitySongPref
+import com.github.donghune.data.local.table.PopularitySongEntity
 import com.github.donghune.data.remote.response.PopularitySongResponse
-import com.github.donghune.domain.entity.PopularitySongEntity
+import com.github.donghune.domain.entity.PopularitySong
 
-fun PopularitySongEntity.toPopularitySongResponse(): PopularitySongResponse {
+fun PopularitySong.toPopularitySongResponse(): PopularitySongResponse {
     return PopularitySongResponse(rank, id, title, singing)
 }
 
-fun PopularitySongResponse.toPopularitySongEntity(): PopularitySongEntity {
-    return PopularitySongEntity(rank, number, title, singer)
+fun PopularitySongResponse.toPopularitySong(): PopularitySong {
+    return PopularitySong(rank, number, title, singer)
 }
 
-fun PopularitySongEntity.toPopularitySongPref(): PopularitySongPref {
-    return PopularitySongPref(id, rank, title, singing)
+fun PopularitySong.toPopularitySongEntity(): PopularitySongEntity {
+    return PopularitySongEntity(id, rank, title, singing)
 }
 
-fun PopularitySongPref.toPopularitySongEntity(): PopularitySongEntity {
-    return PopularitySongEntity(rank, id, title, singing)
+fun PopularitySongEntity.toPopularitySong(): PopularitySong {
+    return PopularitySong(rank, id, title, singing)
 }

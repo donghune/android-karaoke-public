@@ -13,6 +13,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Karaoke"
         android:usesCleartextTraffic="true">
+
         <activity
             android:name="com.github.donghune.presentation.MainActivity"
             android:exported="true">
@@ -22,6 +23,16 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name="com.github.donghune.presentation.latest.LatestActivity"
+            android:exported="true" />
+        <activity
+            android:name="com.github.donghune.presentation.popularity.PopularityActivity"
+            android:exported="true" />
+        <activity
+            android:name="com.github.donghune.presentation.playlist.songs.PlayListSongsActivity"
+            android:exported="false" />
+
     </application>
 
 </manifest>

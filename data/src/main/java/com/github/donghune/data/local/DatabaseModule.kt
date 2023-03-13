@@ -1,7 +1,6 @@
 package com.github.donghune.data.local
 
 import android.content.Context
-import com.github.donghune.data.local.dao.GroupDao
 import com.github.donghune.data.local.dao.PlayListDao
 import com.github.donghune.data.local.dao.SongDao
 import dagger.Module
@@ -24,11 +23,6 @@ object DatabaseModule {
     @Provides
     fun provideSongDao(database: KaraokeDatabase): SongDao {
         return database.songDao()
-    }
-
-    @Provides
-    fun provideGroupDao(database: KaraokeDatabase): GroupDao {
-        return database.groupDao()
     }
 
     @Provides

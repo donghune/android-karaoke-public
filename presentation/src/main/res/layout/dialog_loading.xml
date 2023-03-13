@@ -4,7 +4,7 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:background="@drawable/bg_16_radius"
-    android:backgroundTint="@color/white"
+    android:backgroundTint="@android:color/white"
     android:padding="8dp">
 
     <ProgressBar

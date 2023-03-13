@@ -1,15 +1,22 @@
 package com.github.donghune.domain.repo
 
-import com.github.donghune.domain.entity.GroupEntity
-import com.github.donghune.domain.entity.SongEntity
+import com.github.donghune.domain.entity.PlayList
+import com.github.donghune.domain.entity.Song
+import kotlinx.coroutines.flow.Flow
 
 interface PlayListRepository {
 
-    suspend fun getGroupList(): List<GroupEntity>
+    fun getPlayListFlow(): Flow<List<PlayList>>
 
-    suspend fun addPlayItem(groupEntity: GroupEntity, songEntity: SongEntity)
+    suspend fun getPlayList(): List<PlayList>
 
-    suspend fun addGroup(groupEntity: GroupEntity)
+    suspend fun addPlayItem(songId: Int, playListId: Int)
 
-    suspend fun removeGroup(groupEntity: GroupEntity)
+    suspend fun removePlayItem(songId: Int, playListId: Int)
+
+    suspend fun addPlayList(PlayListName: String)
+
+    suspend fun removePlayList(PlayListName: String)
+
+    fun getPlayListSongs(playListId: Int): Flow<List<Song>>
 }

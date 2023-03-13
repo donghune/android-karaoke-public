@@ -1,7 +1,7 @@
 package com.github.donghune.presentation.entity
 
 import androidx.recyclerview.widget.DiffUtil
-import com.github.donghune.domain.entity.PopularitySongEntity
+import com.github.donghune.domain.entity.PopularitySong
 
 data class PopularitySongModel(
     val rank: Int,
@@ -9,9 +9,7 @@ data class PopularitySongModel(
     val title: String,
     val singing: String
 ) {
-    fun toKaraokeNumber(): String {
-        return String.format("%05d", id)
-    }
+    val karaokeNumber = String.format("%05d", id)
 
     companion object {
         fun diffCallback() = object : DiffUtil.ItemCallback<PopularitySongModel>() {
@@ -26,14 +24,14 @@ data class PopularitySongModel(
             ): Boolean = oldItem == newItem
         }
 
-        operator fun invoke(entity: PopularitySongEntity) = entity.toPopularitySongModel()
+        operator fun invoke(entity: PopularitySong) = entity.toPopularitySongModel()
     }
 }
 
-fun PopularitySongModel.toPopularitySongEntity(): PopularitySongEntity {
-    return PopularitySongEntity(rank, id, title, singing)
+fun PopularitySongModel.toPopularitySong(): PopularitySong {
+    return PopularitySong(rank, id, title, singing)
 }
 
-fun PopularitySongEntity.toPopularitySongModel(): PopularitySongModel {
+fun PopularitySong.toPopularitySongModel(): PopularitySongModel {
     return PopularitySongModel(rank, id, title, singing)
 }

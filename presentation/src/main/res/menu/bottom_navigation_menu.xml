@@ -2,20 +2,11 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
-        android:id="@+id/page_search"
+        android:id="@+id/page_home"
         android:enabled="true"
-        android:icon="@drawable/ic_baseline_library_music_24"
-        android:title="@string/label_search" />
-    <item
-        android:id="@+id/page_latest"
-        android:enabled="true"
-        android:icon="@drawable/ic_baseline_library_music_24"
-        android:title="@string/label_latest"/>
-    <item
-        android:id="@+id/page_popularity"
-        android:enabled="true"
-        android:icon="@drawable/ic_baseline_library_music_24"
-        android:title="@string/label_popularity"/>
+        android:icon="@drawable/baseline_home_24"
+        android:title="@string/label_home" />
+
     <item
         android:id="@+id/page_playlist"
         android:enabled="true"

@@ -1,10 +1,10 @@
 package com.github.donghune.domain.usecase
 
-import com.github.donghune.domain.entity.GroupEntity
+import com.github.donghune.domain.entity.PlayList
 import com.github.donghune.domain.repo.PlayListRepository
 import javax.inject.Inject
 
-class GetGroupWithIncludeWhetherUseCase @Inject constructor(
+class GetPlayListWithIncludeWhetherUseCase @Inject constructor(
     private val playListRepository: PlayListRepository
 ) {
 
@@ -12,8 +12,8 @@ class GetGroupWithIncludeWhetherUseCase @Inject constructor(
         val songId: Int
     )
 
-    suspend operator fun invoke(params: Params): Map<GroupEntity, Boolean> {
-        return playListRepository.getGroupList().associateWith {
+    suspend operator fun invoke(params: Params): Map<PlayList, Boolean> {
+        return playListRepository.getPlayList().associateWith {
             it.songNumbers.contains(params.songId)
         }
     }

@@ -4,8 +4,8 @@ import android.util.Log
 import com.github.donghune.data.local.dao.SongDao
 import com.github.donghune.data.mapper.*
 import com.github.donghune.data.remote.network.KaraokeService
-import com.github.donghune.domain.entity.PopularitySongEntity
-import com.github.donghune.domain.entity.SongEntity
+import com.github.donghune.domain.entity.PopularitySong
+import com.github.donghune.domain.entity.Song
 import com.github.donghune.domain.repo.KaraokeRepository
 import kotlinx.coroutines.flow.first
 import java.text.SimpleDateFormat
@@ -22,39 +22,39 @@ class KaraokeRepositoryImpl @Inject constructor(
         keyword: String,
         offset: Int,
         limit: Int
-    ): List<SongEntity> {
+    ): List<Song> {
         return songDao.getSongListByKeyWord(keyword, offset, limit)
-            .map { it.toSongEntity() }
+            .map { it.toSong() }
     }
 
     override suspend fun searchByNumber(
         id: Int,
         offset: Int,
         limit: Int
-    ): List<SongEntity> {
+    ): List<Song> {
         return songDao.getSongListByNumber(id, offset, limit)
-            .map { it.toSongEntity() }
+            .map { it.toSong() }
     }
 
     override suspend fun searchBySinger(
         singing: String,
         offset: Int,
         limit: Int
-    ): List<SongEntity> {
+    ): List<Song> {
         return songDao.getSongListBySinger(singing, offset, limit)
-            .map { it.toSongEntity() }
+            .map { it.toSong() }
     }
 
     override suspend fun searchByTitleWithSinger(
         keyword: String,
         offset: Int,
         limit: Int
-    ): List<SongEntity> {
+    ): List<Song> {
         return songDao.getSongListByTitleWithSinger(keyword, offset, limit)
-            .map { it.toSongEntity() }
+            .map { it.toSong() }
     }
 
-    override suspend fun getPopularityList(): List<PopularitySongEntity> {
+    override suspend fun getPopularityList(): List<PopularitySong> {
         val now = dateFormat.format(Calendar.getInstance().time)
         val updated = dateFormat.format(
             Calendar.getInstance()
@@ -63,27 +63,27 @@ class KaraokeRepositoryImpl @Inject constructor(
 
         Log.d(TAG, "getPopularityList: $now $updated")
 
-        val data = songDao.getPopularitySongList().map { it.toPopularitySongEntity() }
+        val data = songDao.getPopularitySongList().map { it.toPopularitySong() }
 
         if (now != updated || data.isEmpty()) {
             preferencesRepository.updatePopularityUpdated()
             songDao.clearPopularitySongList()
             return karaokeService.getPopularSongList()
-                .map { it.toPopularitySongEntity() }
-                .onEach { songDao.insertPopularitySong(it.toPopularitySongPref()) }
+                .map { it.toPopularitySong() }
+                .onEach { songDao.insertPopularitySong(it.toPopularitySongEntity()) }
         }
 
         return data
     }
 
-    override suspend fun getLatestList(): List<SongEntity> {
+    override suspend fun getLatestList(): List<Song> {
         val now = dateFormat.format(Calendar.getInstance().time)
         val updated = dateFormat.format(
             Calendar.getInstance()
                 .apply { timeInMillis = preferencesRepository.latestUpdatedFlow.first() }.time
         )
 
-        val data = songDao.getLatestSongList().map { it.toSongEntity() }
+        val data = songDao.getLatestSongList().map { it.toSong() }
 
         Log.d(TAG, "getLatestList: data = [$data]")
 
@@ -91,10 +91,10 @@ class KaraokeRepositoryImpl @Inject constructor(
             preferencesRepository.updateLatestUpdated()
             songDao.clearLatestSongList()
             return karaokeService.getNewSongList()
-                .map { it.toSongEntity() }
-                .onEach { songEntity: SongEntity ->
-                    songDao.insertLatestSongPref(songEntity.toLatestSongPref())
-                    songDao.insertSongPref(songEntity.toSongPref())
+                .map { it.toSong() }
+                .onEach { song: Song ->
+                    songDao.insertLatestSongPref(song.toLatestSongEntity())
+                    songDao.insertSongPref(song.toSongEntity())
                 }
         }
         return data

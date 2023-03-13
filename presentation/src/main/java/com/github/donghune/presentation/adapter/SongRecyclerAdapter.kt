@@ -5,38 +5,38 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.github.donghune.databinding.ItemSongBinding
-import com.github.donghune.presentation.dialog.GroupSelectDialogViewModel
 import com.github.donghune.presentation.entity.SongModel
 
 class SongRecyclerAdapter(
-    private val dialogViewModel: GroupSelectDialogViewModel
-) :
-    ListAdapter<SongModel, SongRecyclerAdapter.ViewHolder>(SongModel.diffCallback()) {
+    private val openOnClickListener: (Int) -> Unit
+) : ListAdapter<SongModel, SongRecyclerAdapter.ViewHolder>(SongModel.diffCallback()) {
 
     class ViewHolder(
-        private val groupSelectDialogViewModel: GroupSelectDialogViewModel,
-        private val binding: ItemSongBinding
+        private val binding: ItemSongBinding,
+        private val openOnClickListener: (Int) -> Unit
     ) : RecyclerView.ViewHolder(binding.root) {
         fun bind(item: SongModel) {
+            binding.textNumber.text = item.karaokeNumber
+            binding.textSinger.text = item.singer
+            binding.textTitle.text = item.title
+            binding.imageOption.setOnClickListener {
+                openOnClickListener(item.id)
+            }
         }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return ViewHolder(
-            dialogViewModel,
             ItemSongBinding.inflate(
                 LayoutInflater.from(parent.context),
                 parent,
                 false
-            )
+            ),
+            openOnClickListener
         )
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.bind(getItem(position))
-    }
-
-    companion object {
-        private val TAG = SongRecyclerAdapter::class.java.simpleName
     }
 }

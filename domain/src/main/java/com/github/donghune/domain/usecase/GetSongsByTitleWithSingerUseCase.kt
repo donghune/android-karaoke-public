@@ -1,6 +1,6 @@
 package com.github.donghune.domain.usecase
 
-import com.github.donghune.domain.entity.SongEntity
+import com.github.donghune.domain.entity.Song
 import com.github.donghune.domain.repo.KaraokeRepository
 import javax.inject.Inject
 
@@ -14,7 +14,7 @@ class GetSongsByTitleWithSingerUseCase @Inject constructor(
         val limit: Int
     )
 
-    suspend operator fun invoke(param: Param): List<SongEntity> {
+    suspend operator fun invoke(param: Param): List<Song> {
         return repository.searchByTitleWithSinger(
             singing = param.singing,
             offset = param.offset,

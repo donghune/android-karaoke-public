@@ -1,7 +1,7 @@
 package com.github.donghune.presentation.entity
 
 import androidx.recyclerview.widget.DiffUtil
-import com.github.donghune.domain.entity.SongEntity
+import com.github.donghune.domain.entity.Song
 
 data class SongModel(
     val id: Int,
@@ -17,14 +17,16 @@ data class SongModel(
                 oldItem == newItem
         }
 
-        operator fun invoke(entity: SongEntity) = SongModel(entity.id, entity.title, entity.singer)
+        operator fun invoke(entity: Song) = SongModel(entity.id, entity.title, entity.singer)
     }
 
-    fun toKaraokeNumber(): String {
-        return String.format("%05d", id)
-    }
+    val karaokeNumber = String.format("%05d", id)
 }
 
-fun SongModel.SongEntity(): SongEntity {
-    return SongEntity(id, title, singer)
+fun SongModel.toSong(): Song {
+    return Song(id, title, singer)
+}
+
+fun Song.toSongModel(): SongModel {
+    return SongModel(id, title, singer)
 }

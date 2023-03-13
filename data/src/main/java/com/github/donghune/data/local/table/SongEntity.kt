@@ -4,10 +4,10 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
-@Entity(tableName = "playlist")
-data class PlayListPref(
+@Entity(tableName = "songs")
+data class SongEntity(
     @PrimaryKey @ColumnInfo(name = "id")
     val id: Int,
-    @ColumnInfo(name = "singId") val singId: Int,
-    @ColumnInfo(name = "groupId") val groupId: Int
+    @ColumnInfo(name = "title") val title: String,
+    @ColumnInfo(name = "singing") val singing: String
 )

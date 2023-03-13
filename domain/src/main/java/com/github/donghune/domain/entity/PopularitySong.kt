@@ -1,7 +1,8 @@
 package com.github.donghune.domain.entity
 
-data class SongEntity(
+data class PopularitySong(
+    val rank: Int,
     val id: Int,
     val title: String,
-    val singer: String
+    val singing: String
 )

@@ -13,24 +13,24 @@ import dagger.hilt.components.SingletonComponent
 object UseCaseModule {
 
     @Provides
-    fun provideAddGroupUseCase(
+    fun provideAddPlayListUseCase(
         playListRepository: PlayListRepository
-    ): AddGroupUseCase {
-        return AddGroupUseCase(playListRepository)
+    ): AddPlayListUseCase {
+        return AddPlayListUseCase(playListRepository)
     }
 
     @Provides
-    fun provideGetGroupsUseCase(
+    fun provideGetPlayListsUseCase(
         playListRepository: PlayListRepository
-    ): GetGroupsUseCase {
-        return GetGroupsUseCase(playListRepository)
+    ): GetPlayListsUseCase {
+        return GetPlayListsUseCase(playListRepository)
     }
 
     @Provides
-    fun provideGetGroupWithIncludeWhetherUseCase(
+    fun provideGetPlayListWithIncludeWhetherUseCase(
         playListRepository: PlayListRepository
-    ): GetGroupWithIncludeWhetherUseCase {
-        return GetGroupWithIncludeWhetherUseCase(playListRepository)
+    ): GetPlayListWithIncludeWhetherUseCase {
+        return GetPlayListWithIncludeWhetherUseCase(playListRepository)
     }
 
     @Provides
@@ -69,9 +69,9 @@ object UseCaseModule {
     }
 
     @Provides
-    fun provideRemoveGroupUseCase(
+    fun provideRemovePlayListUseCase(
         playListRepository: PlayListRepository
-    ): RemoveGroupUseCase {
-        return RemoveGroupUseCase(playListRepository)
+    ): RemovePlayListUseCase {
+        return RemovePlayListUseCase(playListRepository)
     }
 }

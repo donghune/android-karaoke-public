@@ -4,8 +4,8 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
-@Entity(tableName = "groups")
-data class GroupPref(
+@Entity(tableName = "playlist")
+data class PlayListEntity(
     @ColumnInfo(name = "name") val name: String
 ) {
     @PrimaryKey(autoGenerate = true)

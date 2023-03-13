@@ -2,12 +2,11 @@ package com.github.donghune.presentation.playlist
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.github.donghune.domain.usecase.AddGroupUseCase
-import com.github.donghune.domain.usecase.GetGroupsUseCase
-import com.github.donghune.domain.usecase.RemoveGroupUseCase
-import com.github.donghune.presentation.entity.GroupModel
-import com.github.donghune.presentation.entity.toGroupEntity
-import com.github.donghune.presentation.entity.toGroupModel
+import com.github.donghune.domain.usecase.AddPlayListUseCase
+import com.github.donghune.domain.usecase.GetPlayListsUseCase
+import com.github.donghune.domain.usecase.RemovePlayListUseCase
+import com.github.donghune.presentation.entity.PlayListModel
+import com.github.donghune.presentation.entity.toPlayListModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
@@ -15,42 +14,25 @@ import javax.inject.Inject
 
 @HiltViewModel
 class PlayListViewModel @Inject constructor(
-    private val getGroupsUseCase: GetGroupsUseCase,
-    private val addGroupUseCase: AddGroupUseCase,
-    private val removeGroupUseCase: RemoveGroupUseCase
+    getPlayListsUseCase: GetPlayListsUseCase,
+    private val addPlayListUseCase: AddPlayListUseCase,
+    private val removePlayListUseCase: RemovePlayListUseCase
 ) : ViewModel() {
 
-    private val _uiState = MutableStateFlow<PlayListUiState>(PlayListUiState.Loading)
-    val uiState: StateFlow<PlayListUiState>
-        get() = _uiState
+    val PlayLists = getPlayListsUseCase().map { it.map { it.toPlayListModel() } }
+        .stateIn(viewModelScope, SharingStarted.Lazily, emptyList())
 
-    fun getPlayListGroup() {
+    fun addPlayListPlayList(PlayListName: String) {
         viewModelScope.launch {
-            val groups = getGroupsUseCase().map { it.toGroupModel() }
-            _uiState.update { PlayListUiState.Success(groups) }
+            val params = AddPlayListUseCase.Params(PlayListName)
+            addPlayListUseCase(params)
         }
     }
 
-    fun addPlayListGroup(groupName: String) {
+    fun removePlayListPlayList(PlayListModel: PlayListModel) {
         viewModelScope.launch {
-            try {
-                val params =
-                    AddGroupUseCase.Params(GroupModel(-1, groupName, listOf()).toGroupEntity())
-                addGroupUseCase(params)
-            } catch (e: Exception) {
-                _uiState.update { PlayListUiState.Error(e) }
-            }
-        }
-    }
-
-    fun removePlayListGroup(groupModel: GroupModel) {
-        viewModelScope.launch {
-            try {
-                val params = RemoveGroupUseCase.Params(groupModel.toGroupEntity())
-                removeGroupUseCase(params)
-            } catch (e: Exception) {
-                _uiState.update { PlayListUiState.Error(e) }
-            }
+            val params = RemovePlayListUseCase.Params(PlayListModel.name)
+            removePlayListUseCase(params)
         }
     }
 }

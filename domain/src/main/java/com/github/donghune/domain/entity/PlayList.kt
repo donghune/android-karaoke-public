@@ -1,6 +1,6 @@
 package com.github.donghune.domain.entity
 
-class GroupEntity(
+data class PlayList(
     val id: Int,
     val name: String,
     val songNumbers: List<Int>

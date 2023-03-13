@@ -7,12 +7,13 @@ import com.github.donghune.presentation.entity.SongModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class LatestViewModel @Inject constructor(
-    private val getLatestSongsUseCase: GetLatestSongsUseCase,
+    private val getLatestSongsUseCase: GetLatestSongsUseCase
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow<LatestUiState>(LatestUiState.Loading)
@@ -23,9 +24,10 @@ class LatestViewModel @Inject constructor(
         viewModelScope.launch {
             try {
                 val latestSongs = getLatestSongsUseCase()
-                _uiState.emit(LatestUiState.Success(latestSongs.map { SongModel(it) }))
+                _uiState.update { LatestUiState.Success(latestSongs.map { SongModel(it) }) }
             } catch (e: Throwable) {
-                _uiState.emit(LatestUiState.Error(e))
+                e.printStackTrace()
+                _uiState.update { LatestUiState.Error(e) }
             }
         }
     }
