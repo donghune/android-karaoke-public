@@ -1,4 +1,4 @@
-package com.github.donghune.domain.usecase
+package com.github.donghune.domain.usecase.song
 
 import com.github.donghune.domain.entity.Song
 import com.github.donghune.domain.repo.KaraokeRepository
@@ -9,16 +9,17 @@ class GetSongsByTitleWithSingerUseCase @Inject constructor(
 ) {
 
     data class Param(
-        val keyword: String,
-        val offset: Int,
-        val limit: Int
+        val keyword: String
     )
 
     suspend operator fun invoke(param: Param): List<Song> {
-        return repository.searchByTitleWithSinger(
-            singer = param.keyword,
-            offset = param.offset,
-            limit = param.limit
-        )
+        return listOf(
+            repository.searchByTitle(
+                title = param.keyword
+            ),
+            repository.searchBySinger(
+                singer = param.keyword
+            )
+        ).flatten()
     }
 }

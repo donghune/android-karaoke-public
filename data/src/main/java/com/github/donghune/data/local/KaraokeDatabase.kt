@@ -6,15 +6,18 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import com.github.donghune.data.local.dao.PlayListDao
 import com.github.donghune.data.local.dao.SongDao
-import com.github.donghune.data.local.table.*
+import com.github.donghune.data.local.table.PlayListEntity
+import com.github.donghune.data.local.table.SongEntity
+import com.github.donghune.data.local.table.SongToPlayListEntity
 
 @Database(
-    entities = [PlayListEntity::class, SongToPlayListEntity::class, SongEntity::class, PopularitySongEntity::class, LatestSongEntity::class],
+    entities = [PlayListEntity::class, SongToPlayListEntity::class, SongEntity::class],
     version = 1
 )
 abstract class KaraokeDatabase : RoomDatabase() {
-    abstract fun songDao(): SongDao
     abstract fun playListDao(): PlayListDao
+
+    abstract fun songDao(): SongDao
 
     companion object {
         private var instance: KaraokeDatabase? = null
@@ -25,8 +28,7 @@ abstract class KaraokeDatabase : RoomDatabase() {
                     applicationContext,
                     KaraokeDatabase::class.java,
                     "database-karaoke"
-                ).addCallback(KaraokeDatabaseCallback(applicationContext))
-                    .build()
+                ).build()
             }
             return instance!!
         }

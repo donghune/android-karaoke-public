@@ -1,4 +1,4 @@
-package com.github.donghune.domain.usecase
+package com.github.donghune.domain.usecase.playlist
 
 import com.github.donghune.domain.entity.PlayList
 import com.github.donghune.domain.repo.PlayListRepository

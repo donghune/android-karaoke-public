@@ -2,7 +2,7 @@ package com.github.donghune.presentation.latest
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.github.donghune.domain.usecase.GetLatestSongsUseCase
+import com.github.donghune.domain.usecase.song.GetLatestSongsUseCase
 import com.github.donghune.presentation.entity.SongModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow

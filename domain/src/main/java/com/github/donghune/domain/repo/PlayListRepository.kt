@@ -10,9 +10,9 @@ interface PlayListRepository {
 
     suspend fun getPlayList(): List<PlayList>
 
-    suspend fun addPlayItem(songId: Int, playListId: Int)
+    suspend fun addPlayItem(song: Song, playListId: Int)
 
-    suspend fun removePlayItem(songId: Int, playListId: Int)
+    suspend fun removePlayItem(song: Song, playListId: Int)
 
     suspend fun addPlayList(playListName: String)
 

@@ -2,8 +2,9 @@ package com.github.donghune.presentation.search
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.github.donghune.domain.usecase.*
+import com.github.donghune.domain.usecase.song.*
 import com.github.donghune.presentation.entity.SongModel
+import com.github.donghune.presentation.entity.toSongModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -41,8 +42,11 @@ class SearchViewModel @Inject constructor(
 
     init {
         viewModelScope.launch {
-            val latestSongs = getLatestSongsUseCase()
-                .map { SongModel(it) }.subList(0, 5)
+            val latestSongs = try {
+                getLatestSongsUseCase().map { it.toSongModel() }.subList(0, 5)
+            } catch (e: Exception) {
+                emptyList()
+            }
 
             val popularitySongs = getPopularitySongsUseCase()
                 .map { SongModel(it.id, it.title, it.singer) }
@@ -78,13 +82,13 @@ class SearchViewModel @Inject constructor(
 
     private suspend fun createFlow(searchType: SearchType, keyword: String) = when (searchType) {
         SearchType.TITLE -> getSongsByKeywordUseCase(
-            GetSongsByKeywordUseCase.Param(keyword, 0, 100)
+            GetSongsByKeywordUseCase.Param(keyword)
         )
         SearchType.SINGER -> getSongsBySingerUseCase(
-            GetSongsBySingerUseCase.Param(keyword, 0, 100)
+            GetSongsBySingerUseCase.Param(keyword)
         )
         SearchType.TITLE_WITH_SINGER -> getSongsByTitleWithSingerUseCase(
-            GetSongsByTitleWithSingerUseCase.Param(keyword, 0, 100)
+            GetSongsByTitleWithSingerUseCase.Param(keyword)
         )
     }
 

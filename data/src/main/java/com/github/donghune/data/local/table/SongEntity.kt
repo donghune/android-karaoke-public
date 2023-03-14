@@ -4,10 +4,13 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
-@Entity(tableName = "songs")
+@Entity(tableName = "song")
 data class SongEntity(
-    @PrimaryKey @ColumnInfo(name = "id")
+    @PrimaryKey(autoGenerate = true)
+    @ColumnInfo(name = "id")
     val id: Int,
-    @ColumnInfo(name = "title") val title: String,
-    @ColumnInfo(name = "singer") val singer: String
+    @ColumnInfo(name = "title")
+    val title: String,
+    @ColumnInfo(name = "singer")
+    val singer: String
 )

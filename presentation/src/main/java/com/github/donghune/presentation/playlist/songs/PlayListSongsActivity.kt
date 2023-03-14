@@ -21,10 +21,14 @@ import kotlinx.coroutines.launch
 class PlayListSongsActivity : BaseActivity() {
 
     companion object {
+        private const val EXTRA_PLAY_LIST_ID = "EXTRA_PLAY_LIST_ID"
+        private const val EXTRA_PLAY_LIST_NAME = "EXTRA_PLAY_LIST_NAME"
+
         @JvmStatic
-        fun start(context: Context, playListId: Int) {
+        fun start(context: Context, playListName: String, playListId: Int) {
             val starter = Intent(context, PlayListSongsActivity::class.java)
-            starter.putExtra("playListId", playListId)
+            starter.putExtra(EXTRA_PLAY_LIST_ID, playListId)
+            starter.putExtra(EXTRA_PLAY_LIST_NAME, playListName)
             context.startActivity(starter)
         }
     }
@@ -41,6 +45,8 @@ class PlayListSongsActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
+
+        binding.toolbar.title = intent.getStringExtra(EXTRA_PLAY_LIST_NAME)
 
         binding.recyclerSong.apply {
             adapter = recyclerAdapter
@@ -75,7 +81,7 @@ class PlayListSongsActivity : BaseActivity() {
                                 it.playListList.values.toBooleanArray()
                             ) { _, index, value ->
                                 dialogViewModel.setPlayListForSong(
-                                    songId = it.songId,
+                                    songModel = it.songModel,
                                     playListId = it.playListList.keys.toList()[index].id,
                                     isChecked = value
                                 )

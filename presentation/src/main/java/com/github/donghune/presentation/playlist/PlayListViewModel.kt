@@ -2,9 +2,9 @@ package com.github.donghune.presentation.playlist
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.github.donghune.domain.usecase.AddPlayListUseCase
-import com.github.donghune.domain.usecase.GetPlayListsUseCase
-import com.github.donghune.domain.usecase.RemovePlayListUseCase
+import com.github.donghune.domain.usecase.playlist.AddPlayListUseCase
+import com.github.donghune.domain.usecase.playlist.GetPlayListsUseCase
+import com.github.donghune.domain.usecase.playlist.RemovePlayListUseCase
 import com.github.donghune.presentation.entity.PlayListModel
 import com.github.donghune.presentation.entity.toPlayListModel
 import dagger.hilt.android.lifecycle.HiltViewModel

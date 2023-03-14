@@ -27,7 +27,7 @@ class PlayListFragment : BaseFragment() {
     private val viewModel: PlayListViewModel by viewModels()
     private val recyclerAdapter: PlayListRecyclerAdapter by lazy {
         PlayListRecyclerAdapter(
-            onClickListener = { PlayListSongsActivity.start(requireContext(), it.id) }
+            onClickListener = { PlayListSongsActivity.start(requireContext(), it.name, it.id) }
         )
     }
 

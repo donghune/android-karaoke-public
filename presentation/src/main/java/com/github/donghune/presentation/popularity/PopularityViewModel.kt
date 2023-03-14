@@ -2,7 +2,7 @@ package com.github.donghune.presentation.popularity
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.github.donghune.domain.usecase.GetPopularitySongsUseCase
+import com.github.donghune.domain.usecase.song.GetPopularitySongsUseCase
 import com.github.donghune.presentation.entity.toSongModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow

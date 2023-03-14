@@ -3,6 +3,11 @@ package com.github.donghune.domain
 import com.github.donghune.domain.repo.KaraokeRepository
 import com.github.donghune.domain.repo.PlayListRepository
 import com.github.donghune.domain.usecase.*
+import com.github.donghune.domain.usecase.playlist.AddPlayListUseCase
+import com.github.donghune.domain.usecase.playlist.GetPlayListWithIncludeWhetherUseCase
+import com.github.donghune.domain.usecase.playlist.GetPlayListsUseCase
+import com.github.donghune.domain.usecase.playlist.RemovePlayListUseCase
+import com.github.donghune.domain.usecase.song.*
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

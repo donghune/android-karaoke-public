@@ -1,8 +1,6 @@
 package com.github.donghune.data.remote.network
 
-import com.github.donghune.data.remote.response.PopularitySongResponse
-import com.github.donghune.data.remote.response.SongResponse
-import com.github.donghune.domain.entity.SearchType
+import com.github.donghune.data.remote.response.CrawlingSongResponse
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import org.jsoup.Jsoup
@@ -10,30 +8,21 @@ import org.jsoup.nodes.Element
 import org.jsoup.select.Elements
 import javax.inject.Inject
 
-class KaraokeTJService @Inject constructor() : KaraokeService {
+class KaraokeTJCrawlingService @Inject constructor() : KaraokeCrawlingService {
 
-    override suspend fun getSongList(
-        search: String,
-        type: SearchType,
-        page: Int,
-        count: Int
-    ): List<SongResponse> {
-        return listOf()
-    }
-
-    override suspend fun getPopularSongList(): List<PopularitySongResponse> {
+    override suspend fun getPopularSongList(): List<CrawlingSongResponse> {
         return withContext(Dispatchers.IO) {
             getItemList("http://m.tjmedia.co.kr/tjsong/song_popular.asp")
         }.map {
-            PopularitySongResponse(it[0].toInt(), it[1].toInt(), it[2], it[3])
+            CrawlingSongResponse(it[1].toInt(), it[2], it[3])
         }
     }
 
-    override suspend fun getNewSongList(): List<SongResponse> {
+    override suspend fun getNewSongList(): List<CrawlingSongResponse> {
         return withContext(Dispatchers.IO) {
             getItemList("http://m.tjmedia.co.kr/tjsong/song_monthNew.asp")
         }.map {
-            SongResponse(it[0].toInt(), it[1], it[2])
+            CrawlingSongResponse(it[0].toInt(), it[1], it[2])
         }
     }
 

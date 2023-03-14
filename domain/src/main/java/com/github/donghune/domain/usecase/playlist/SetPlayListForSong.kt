@@ -1,5 +1,6 @@
-package com.github.donghune.domain.usecase
+package com.github.donghune.domain.usecase.playlist
 
+import com.github.donghune.domain.entity.Song
 import com.github.donghune.domain.repo.PlayListRepository
 import javax.inject.Inject
 
@@ -7,7 +8,7 @@ class SetPlayListForSong @Inject constructor(
     private val playListRepository: PlayListRepository
 ) {
     data class Params(
-        val songId: Int,
+        val song: Song,
         val playListId: Int,
         val isChecked: Boolean
     )
@@ -15,12 +16,12 @@ class SetPlayListForSong @Inject constructor(
     suspend operator fun invoke(params: Params) {
         if (params.isChecked) {
             playListRepository.addPlayItem(
-                params.songId,
+                params.song,
                 params.playListId
             )
         } else {
             playListRepository.removePlayItem(
-                params.songId,
+                params.song,
                 params.playListId
             )
         }

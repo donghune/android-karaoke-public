@@ -144,7 +144,7 @@ class SearchFragment : BaseFragment() {
                                 it.playListList.values.toBooleanArray()
                             ) { _, index, value ->
                                 dialogViewModel.setPlayListForSong(
-                                    songId = it.songId,
+                                    songModel = it.songModel,
                                     playListId = it.playListList.keys.toList()[index].id,
                                     isChecked = value
                                 )

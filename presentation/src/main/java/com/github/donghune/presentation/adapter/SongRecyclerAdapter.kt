@@ -8,19 +8,19 @@ import com.github.donghune.databinding.ItemSongBinding
 import com.github.donghune.presentation.entity.SongModel
 
 class SongRecyclerAdapter(
-    private val openOnClickListener: (Int) -> Unit
+    private val openOnClickListener: (SongModel) -> Unit
 ) : ListAdapter<SongModel, SongRecyclerAdapter.ViewHolder>(SongModel.diffCallback()) {
 
     class ViewHolder(
         private val binding: ItemSongBinding,
-        private val openOnClickListener: (Int) -> Unit
+        private val openOnClickListener: (SongModel) -> Unit
     ) : RecyclerView.ViewHolder(binding.root) {
         fun bind(item: SongModel) {
             binding.textNumber.text = item.karaokeNumber
             binding.textSinger.text = item.singer
             binding.textTitle.text = item.title
             binding.imageOption.setOnClickListener {
-                openOnClickListener(item.id)
+                openOnClickListener(item)
             }
         }
     }

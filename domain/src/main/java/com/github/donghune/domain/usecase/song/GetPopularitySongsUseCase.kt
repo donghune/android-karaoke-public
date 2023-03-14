@@ -1,4 +1,4 @@
-package com.github.donghune.domain.usecase
+package com.github.donghune.domain.usecase.song
 
 import com.github.donghune.domain.entity.Song
 import com.github.donghune.domain.repo.KaraokeRepository

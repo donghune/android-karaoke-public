@@ -21,12 +21,11 @@ object DatabaseModule {
     }
 
     @Provides
-    fun provideSongDao(database: KaraokeDatabase): SongDao {
-        return database.songDao()
-    }
-
-    @Provides
     fun providePlayListDao(database: KaraokeDatabase): PlayListDao {
         return database.playListDao()
+    }
+    @Provides
+    fun provideSongDao(database: KaraokeDatabase): SongDao {
+        return database.songDao()
     }
 }
