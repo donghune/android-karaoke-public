@@ -52,12 +52,12 @@ class PlayListRepositoryImpl @Inject constructor(
         playListDao.removeSongToPlayList(songId, playListId)
     }
 
-    override suspend fun addPlayList(PlayListName: String) {
-        playListDao.addPlayList(PlayListEntity(PlayListName))
+    override suspend fun addPlayList(playListName: String) {
+        playListDao.addPlayList(PlayListEntity(playListName))
     }
 
-    override suspend fun removePlayList(PlayListName: String) {
-        playListDao.removePlayList(PlayListEntity(PlayListName))
+    override suspend fun removePlayList(playListName: String) {
+        playListDao.removePlayList(PlayListEntity(playListName))
     }
 
     override fun getPlayListSongs(playListId: Int): Flow<List<Song>> {

@@ -22,9 +22,9 @@ class PlayListViewModel @Inject constructor(
     val PlayLists = getPlayListsUseCase().map { it.map { it.toPlayListModel() } }
         .stateIn(viewModelScope, SharingStarted.Lazily, emptyList())
 
-    fun addPlayListPlayList(PlayListName: String) {
+    fun addPlayListPlayList(playListName: String) {
         viewModelScope.launch {
-            val params = AddPlayListUseCase.Params(PlayListName)
+            val params = AddPlayListUseCase.Params(playListName)
             addPlayListUseCase(params)
         }
     }

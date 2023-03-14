@@ -8,7 +8,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.github.donghune.databinding.PopularityFragmentBinding
-import com.github.donghune.presentation.adapter.PopularitySongRecyclerAdapter
+import com.github.donghune.presentation.adapter.SongRecyclerAdapter
 import com.github.donghune.presentation.base.BaseActivity
 import com.github.donghune.presentation.dialog.PlayListSelectDialogUiState
 import com.github.donghune.presentation.dialog.PlayListSelectDialogViewModel
@@ -23,8 +23,8 @@ class PopularityActivity : BaseActivity() {
     private val binding by lazy { PopularityFragmentBinding.inflate(layoutInflater) }
     private val viewModel: PopularityViewModel by viewModels()
     private val dialogViewModel: PlayListSelectDialogViewModel by viewModels()
-    private val recyclerAdapter: PopularitySongRecyclerAdapter by lazy {
-        PopularitySongRecyclerAdapter(
+    private val recyclerAdapter: SongRecyclerAdapter by lazy {
+        SongRecyclerAdapter(
             openOnClickListener = dialogViewModel::getPlayListWithIncludeWhether
         )
     }
@@ -51,7 +51,7 @@ class PopularityActivity : BaseActivity() {
                     PopularityUiState.Loading -> loadingDialog.show()
                     is PopularityUiState.Success -> {
                         loadingDialog.dismiss()
-                        recyclerAdapter.submitList(it.PlayLists)
+                        recyclerAdapter.submitList(it.playList)
                     }
                 }
             }

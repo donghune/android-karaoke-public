@@ -9,14 +9,14 @@ class GetSongsByTitleWithSingerUseCase @Inject constructor(
 ) {
 
     data class Param(
-        val singing: String,
+        val keyword: String,
         val offset: Int,
         val limit: Int
     )
 
     suspend operator fun invoke(param: Param): List<Song> {
         return repository.searchByTitleWithSinger(
-            singing = param.singing,
+            singer = param.keyword,
             offset = param.offset,
             limit = param.limit
         )

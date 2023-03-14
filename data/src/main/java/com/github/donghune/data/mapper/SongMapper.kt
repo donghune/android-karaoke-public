@@ -14,7 +14,7 @@ fun Song.toSongEntity(): SongEntity {
 }
 
 fun SongEntity.toSong(): Song {
-    return Song(id, title, singing)
+    return Song(id, title, singer)
 }
 
 fun Song.toLatestSongEntity(): LatestSongEntity {
@@ -22,5 +22,5 @@ fun Song.toLatestSongEntity(): LatestSongEntity {
 }
 
 fun LatestSongEntity.toSong(): Song {
-    return Song(id, title, singing)
+    return Song(id, title, singer)
 }

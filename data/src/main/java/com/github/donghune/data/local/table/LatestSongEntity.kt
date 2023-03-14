@@ -9,5 +9,5 @@ data class LatestSongEntity(
     @PrimaryKey @ColumnInfo(name = "id")
     val id: Int,
     @ColumnInfo(name = "title") val title: String,
-    @ColumnInfo(name = "singing") val singing: String
+    @ColumnInfo(name = "singer") val singer: String
 )

@@ -1,10 +1,11 @@
 package com.github.donghune.data.repo
 
-import android.util.Log
 import com.github.donghune.data.local.dao.SongDao
-import com.github.donghune.data.mapper.*
+import com.github.donghune.data.mapper.toLatestSongEntity
+import com.github.donghune.data.mapper.toPopularitySongEntity
+import com.github.donghune.data.mapper.toSong
+import com.github.donghune.data.mapper.toSongEntity
 import com.github.donghune.data.remote.network.KaraokeService
-import com.github.donghune.domain.entity.PopularitySong
 import com.github.donghune.domain.entity.Song
 import com.github.donghune.domain.repo.KaraokeRepository
 import kotlinx.coroutines.flow.first
@@ -37,11 +38,11 @@ class KaraokeRepositoryImpl @Inject constructor(
     }
 
     override suspend fun searchBySinger(
-        singing: String,
+        singer: String,
         offset: Int,
         limit: Int
     ): List<Song> {
-        return songDao.getSongListBySinger(singing, offset, limit)
+        return songDao.getSongListBySinger(singer, offset, limit)
             .map { it.toSong() }
     }
 
@@ -54,22 +55,20 @@ class KaraokeRepositoryImpl @Inject constructor(
             .map { it.toSong() }
     }
 
-    override suspend fun getPopularityList(): List<PopularitySong> {
+    override suspend fun getPopularityList(): List<Song> {
         val now = dateFormat.format(Calendar.getInstance().time)
         val updated = dateFormat.format(
             Calendar.getInstance()
                 .apply { timeInMillis = preferencesRepository.popularityUpdatedFlow.first() }.time
         )
 
-        Log.d(TAG, "getPopularityList: $now $updated")
-
-        val data = songDao.getPopularitySongList().map { it.toPopularitySong() }
+        val data = songDao.getPopularitySongList().map { it.toSong() }
 
         if (now != updated || data.isEmpty()) {
             preferencesRepository.updatePopularityUpdated()
             songDao.clearPopularitySongList()
             return karaokeService.getPopularSongList()
-                .map { it.toPopularitySong() }
+                .map { it.toSong() }
                 .onEach { songDao.insertPopularitySong(it.toPopularitySongEntity()) }
         }
 
@@ -84,8 +83,6 @@ class KaraokeRepositoryImpl @Inject constructor(
         )
 
         val data = songDao.getLatestSongList().map { it.toSong() }
-
-        Log.d(TAG, "getLatestList: data = [$data]")
 
         if (now != updated || data.isEmpty()) {
             preferencesRepository.updateLatestUpdated()
@@ -102,6 +99,6 @@ class KaraokeRepositoryImpl @Inject constructor(
 
     companion object {
         private val TAG = KaraokeRepositoryImpl::class.java.simpleName
-        private val dateFormat = SimpleDateFormat("yyyy-MM-dd")
+        private val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.KOREA)
     }
 }

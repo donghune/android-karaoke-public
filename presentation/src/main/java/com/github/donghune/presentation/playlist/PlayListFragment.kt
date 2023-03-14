@@ -68,8 +68,8 @@ class PlayListFragment : BaseFragment() {
                 .setTitle("그룹 추가하기")
                 .setMessage("추가할 그룹의 이름을 입력해주세요")
                 .setPositiveButton("추가") { dialog, _ ->
-                    val PlayListName = binding.editInput.text.toString()
-                    if (PlayListName.isEmpty()) {
+                    val playListName = binding.editInput.text.toString()
+                    if (playListName.isEmpty()) {
                         Toast.makeText(requireContext(), "그룹이름을 입력해주세요", Toast.LENGTH_SHORT).show()
                         return@setPositiveButton
                     }

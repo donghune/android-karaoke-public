@@ -17,10 +17,10 @@ interface SongDao {
     @Query("SELECT * FROM songs WHERE id LIKE :id LIMIT :limit OFFSET :offset")
     suspend fun getSongListByNumber(id: Int, offset: Int, limit: Int): List<SongEntity>
 
-    @Query("SELECT * FROM songs WHERE singing LIKE :singing LIMIT :limit OFFSET :offset")
-    suspend fun getSongListBySinger(singing: String, offset: Int, limit: Int): List<SongEntity>
+    @Query("SELECT * FROM songs WHERE singer LIKE :singer LIMIT :limit OFFSET :offset")
+    suspend fun getSongListBySinger(singer: String, offset: Int, limit: Int): List<SongEntity>
 
-    @Query("SELECT * FROM songs WHERE singing LIKE :keyword or title LIKE :keyword LIMIT :limit OFFSET :offset")
+    @Query("SELECT * FROM songs WHERE singer LIKE :keyword or title LIKE :keyword LIMIT :limit OFFSET :offset")
     suspend fun getSongListByTitleWithSinger(
         keyword: String,
         offset: Int,
@@ -29,7 +29,7 @@ interface SongDao {
 
     // pop
 
-    @Query("SELECT * FROM popularity_songs order by rank")
+    @Query("SELECT * FROM popularity_songs")
     suspend fun getPopularitySongList(): List<PopularitySongEntity>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)

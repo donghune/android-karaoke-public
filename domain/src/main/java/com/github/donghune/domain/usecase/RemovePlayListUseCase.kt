@@ -8,10 +8,10 @@ class RemovePlayListUseCase @Inject constructor(
 ) {
 
     data class Params(
-        val PlayListName: String
+        val playListName: String
     )
 
     suspend operator fun invoke(params: Params) {
-        playListRepository.removePlayList(params.PlayListName)
+        playListRepository.removePlayList(params.playListName)
     }
 }

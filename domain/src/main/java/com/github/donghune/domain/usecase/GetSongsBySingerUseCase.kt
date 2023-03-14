@@ -8,14 +8,14 @@ class GetSongsBySingerUseCase @Inject constructor(
     val repo: KaraokeRepository
 ) {
     data class Param(
-        val singing: String,
+        val singer: String,
         val offset: Int,
         val limit: Int
     )
 
     suspend operator fun invoke(param: Param): List<Song> {
         return repo.searchBySinger(
-            singing = param.singing,
+            singer = param.singer,
             offset = param.offset,
             limit = param.limit
         )

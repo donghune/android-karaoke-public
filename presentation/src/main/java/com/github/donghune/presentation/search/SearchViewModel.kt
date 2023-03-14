@@ -45,7 +45,7 @@ class SearchViewModel @Inject constructor(
                 .map { SongModel(it) }.subList(0, 5)
 
             val popularitySongs = getPopularitySongsUseCase()
-                .map { SongModel(it.id, it.title, it.singing) }
+                .map { SongModel(it.id, it.title, it.singer) }
                 .subList(0, 5)
 
             _uiState.update {

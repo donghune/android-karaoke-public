@@ -8,7 +8,6 @@ import androidx.room.PrimaryKey
 data class PopularitySongEntity(
     @PrimaryKey @ColumnInfo(name = "id")
     val id: Int,
-    @ColumnInfo(name = "rank") val rank: Int,
     @ColumnInfo(name = "title") val title: String,
-    @ColumnInfo(name = "singing") val singing: String
+    @ColumnInfo(name = "singer") val singer: String
 )

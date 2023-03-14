@@ -3,7 +3,7 @@ package com.github.donghune.presentation.popularity
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.github.donghune.domain.usecase.GetPopularitySongsUseCase
-import com.github.donghune.presentation.entity.toPopularitySongModel
+import com.github.donghune.presentation.entity.toSongModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -23,9 +23,9 @@ class PopularityViewModel @Inject constructor(
     init {
         viewModelScope.launch {
             try {
-                val popularitySongs = getPopularitySongsUseCase()
-                    .map { entity -> entity.toPopularitySongModel() }
-                _uiState.update { PopularityUiState.Success(popularitySongs) }
+                val songs = getPopularitySongsUseCase()
+                    .map { entity -> entity.toSongModel() }
+                _uiState.update { PopularityUiState.Success(songs) }
             } catch (e: Exception) {
                 _uiState.update { PopularityUiState.Error(e) }
             }

@@ -16,10 +16,10 @@ class KaraokeDatabaseCallback(
 //        ).forEach {
 //            try {
 //                db.execSQL(
-//                    "INSERT INTO songs(id,title,singing) VALUES(" +
+//                    "INSERT INTO songs(id,title,singer) VALUES(" +
 //                            "${it._id}," +
 //                            "'${it.title.replace("'", "''")}'," +
-//                            "'${it.singing.replace("'", "''")}'" +
+//                            "'${it.singer.replace("'", "''")}'" +
 //                            ")"
 //                )
 //            } catch (exception: Exception) {

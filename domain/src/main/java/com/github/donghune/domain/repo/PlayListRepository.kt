@@ -14,9 +14,9 @@ interface PlayListRepository {
 
     suspend fun removePlayItem(songId: Int, playListId: Int)
 
-    suspend fun addPlayList(PlayListName: String)
+    suspend fun addPlayList(playListName: String)
 
-    suspend fun removePlayList(PlayListName: String)
+    suspend fun removePlayList(playListName: String)
 
     fun getPlayListSongs(playListId: Int): Flow<List<Song>>
 }
