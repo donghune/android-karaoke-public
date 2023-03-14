@@ -52,18 +52,18 @@
                     android:drawableTint="@color/md_theme_light_onBackground"
                     android:hint="어떤 노래를 검색하고 싶으세요?"
                     android:maxLines="1"
-                    android:singleLine="true"
                     android:paddingStart="16dp"
                     android:paddingTop="8dp"
                     android:paddingEnd="16dp"
                     android:paddingBottom="8dp"
+                    android:singleLine="true"
                     android:textColor="@color/md_theme_light_onBackground"
                     android:textColorHint="@color/md_theme_light_onBackground" />
 
                 <androidx.appcompat.widget.AppCompatImageButton
                     android:id="@+id/image_search_type"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
                     android:background="@drawable/baseline_person_24"
                     android:backgroundTint="@color/md_theme_light_onBackground"
                     android:padding="16dp" />
@@ -76,9 +76,9 @@
                 android:layout_height="wrap_content"
                 android:text="검색된 노래가 없어요 😢"
                 android:textAlignment="center"
-                android:visibility="gone"
                 android:textAppearance="@style/TextAppearance.Material3.HeadlineSmall"
                 android:textColor="@color/md_theme_light_onBackground"
+                android:visibility="gone"
                 app:layout_constraintTop_toBottomOf="@id/layout_field" />
 
             <androidx.recyclerview.widget.RecyclerView
@@ -118,16 +118,48 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="@id/text_latest_title" />
 
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/recycler_latest_song"
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/layout_latest"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="0dp"
                     android:layout_marginTop="16dp"
-                    android:overScrollMode="never"
-                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                    app:layout_constraintTop_toBottomOf="@id/text_latest_title"
-                    tools:itemCount="5"
-                    tools:listitem="@layout/item_song" />
+                    app:layout_constraintTop_toBottomOf="@id/text_latest_title">
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/recycler_latest_song"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:overScrollMode="never"
+                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                        tools:itemCount="5"
+                        tools:listitem="@layout/item_song" />
+
+                    <com.facebook.shimmer.ShimmerFrameLayout
+                        android:id="@+id/sf_latest_song"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        app:shimmer_auto_start="true">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:orientation="vertical">
+
+                            <include layout="@layout/item_song_loading" />
+
+                            <include layout="@layout/item_song_loading" />
+
+                            <include layout="@layout/item_song_loading" />
+
+                            <include layout="@layout/item_song_loading" />
+
+                            <include layout="@layout/item_song_loading" />
+
+                        </LinearLayout>
+
+                    </com.facebook.shimmer.ShimmerFrameLayout>
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
 
                 <TextView
                     android:id="@+id/text_popularity_title"
@@ -139,7 +171,7 @@
                     android:textColor="@color/md_theme_light_onBackground"
                     android:textStyle="bold"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/recycler_latest_song" />
+                    app:layout_constraintTop_toBottomOf="@id/layout_latest" />
 
                 <TextView
                     android:id="@+id/text_popularity_title_view_all"
@@ -152,16 +184,48 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="@id/text_popularity_title" />
 
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/recycler_popularity_song"
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/layout_popularity"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="0dp"
                     android:layout_marginTop="16dp"
-                    android:overScrollMode="never"
-                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                    app:layout_constraintTop_toBottomOf="@id/text_popularity_title"
-                    tools:itemCount="5"
-                    tools:listitem="@layout/item_song" />
+                    app:layout_constraintTop_toBottomOf="@id/text_popularity_title">
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/recycler_popularity_song"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:overScrollMode="never"
+                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                        tools:itemCount="5"
+                        tools:listitem="@layout/item_song" />
+
+                    <com.facebook.shimmer.ShimmerFrameLayout
+                        android:id="@+id/sf_popularity_song"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        app:shimmer_auto_start="true">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:orientation="vertical">
+
+                            <include layout="@layout/item_song_loading" />
+
+                            <include layout="@layout/item_song_loading" />
+
+                            <include layout="@layout/item_song_loading" />
+
+                            <include layout="@layout/item_song_loading" />
+
+                            <include layout="@layout/item_song_loading" />
+
+                        </LinearLayout>
+
+                    </com.facebook.shimmer.ShimmerFrameLayout>
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 

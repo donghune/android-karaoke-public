@@ -91,19 +91,23 @@ class SearchFragment : BaseFragment() {
             viewModel.uiState.collect {
                 when (it) {
                     is SearchUiState.Error -> loadingDialog.dismiss()
-                    SearchUiState.Loading -> loadingDialog.show()
+                    SearchUiState.Loading -> {
+                        showSkeletonUi(true)
+                    }
                     is SearchUiState.InitLoad -> {
-                        loadingDialog.dismiss()
+                        showSkeletonUi(false)
                         binding.recyclerSearchResults.isVisible = false
                         binding.layoutRecommend.isVisible = true
                         latestAdapter.submitList(it.latestSongs)
                         popularityAdapter.submitList(it.popularitySongs)
                     }
                     is SearchUiState.SearchResult -> {
-                        loadingDialog.dismiss()
                         binding.recyclerSearchResults.isVisible = true
                         binding.layoutRecommend.isVisible = false
-                        searchAdapter.submitList(it.searchSongs)
+                        searchAdapter.submitList(it.searchSongs) {
+                            binding.recyclerSearchResults.layoutManager
+                                ?.scrollToPosition(0)
+                        }
                         binding.textSearchEmptyMessage.isVisible = it.searchSongs.isEmpty()
                     }
                 }
@@ -115,7 +119,7 @@ class SearchFragment : BaseFragment() {
                 when (it) {
                     SearchViewModel.SearchType.TITLE -> R.drawable.baseline_title_24
                     SearchViewModel.SearchType.SINGER -> R.drawable.baseline_person_24
-                    SearchViewModel.SearchType.TITLE_WITH_SINGER -> R.drawable.baseline_title_24
+                    SearchViewModel.SearchType.TITLE_WITH_SINGER -> R.drawable.all
                 }.also { drawableId ->
                     binding.imageSearchType.setBackgroundDrawable(
                         ResourcesCompat.getDrawable(
@@ -131,11 +135,7 @@ class SearchFragment : BaseFragment() {
         lifecycleScope.launch {
             dialogViewModel.uiState.collect {
                 when (it) {
-                    is PlayListSelectDialogUiState.Empty -> loadingDialog.dismiss()
-                    is PlayListSelectDialogUiState.Error -> loadingDialog.dismiss()
-                    PlayListSelectDialogUiState.Loading -> loadingDialog.show()
                     is PlayListSelectDialogUiState.Success -> {
-                        loadingDialog.dismiss()
                         MaterialAlertDialogBuilder(requireContext())
                             .setTitle("추가할 그룹을 선택해주세요")
                             .setPositiveButton("완료") { dialog, _ -> dialog.dismiss() }
@@ -152,6 +152,7 @@ class SearchFragment : BaseFragment() {
                             .setOnDismissListener { dialogViewModel.dismissDialog() }
                             .show()
                     }
+                    else -> return@collect
                 }
             }
         }
@@ -177,11 +178,23 @@ class SearchFragment : BaseFragment() {
         searchSong(viewModel.searchType.value, binding.fieldSearch.text.toString())
     }
 
+    private fun showSkeletonUi(isVisible: Boolean) {
+        binding.sfLatestSong.isVisible = isVisible
+        binding.sfPopularitySong.isVisible = isVisible
+        if (isVisible) {
+            binding.sfLatestSong.startShimmer()
+            binding.sfPopularitySong.startShimmer()
+        } else {
+            binding.sfLatestSong.stopShimmer()
+            binding.sfPopularitySong.stopShimmer()
+        }
+    }
+
     private fun searchSong(searchType: Type, keyword: String) {
         if (keyword.isEmpty()) {
             return
         }
-        viewModel.search(searchType, "%$keyword%")
+        viewModel.search(searchType, keyword)
     }
 
     companion object {

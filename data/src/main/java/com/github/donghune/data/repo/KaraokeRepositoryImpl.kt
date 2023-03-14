@@ -15,17 +15,17 @@ class KaraokeRepositoryImpl @Inject constructor(
 ) : KaraokeRepository {
 
     override suspend fun searchByTitle(title: String): List<Song> {
-        return mananaKaraokeService.searchByTitle(title)
+        return mananaKaraokeService.searchByTitle(title = title)
             .map(MananaSongResponse::toSong)
     }
 
     override suspend fun searchByNumber(id: Int): List<Song> {
-        return mananaKaraokeService.searchByNo(id.toString())
+        return mananaKaraokeService.searchByNo(no = id.toString())
             .map(MananaSongResponse::toSong)
     }
 
     override suspend fun searchBySinger(singer: String): List<Song> {
-        return mananaKaraokeService.searchBySinger(singer)
+        return mananaKaraokeService.searchBySinger(singer = singer)
             .map(MananaSongResponse::toSong)
     }
 

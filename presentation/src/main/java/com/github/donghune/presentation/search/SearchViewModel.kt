@@ -75,6 +75,7 @@ class SearchViewModel @Inject constructor(
                     )
                 }
             } catch (e: Exception) {
+                e.printStackTrace()
                 _uiState.update { SearchUiState.Error(e) }
             }
         }

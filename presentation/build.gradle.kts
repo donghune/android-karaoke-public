@@ -40,7 +40,7 @@ dependencies {
     implementation("androidx.datastore:datastore-preferences-core:1.0.0")
 
     implementation("com.google.android.material:material:1.8.0")
-    implementation("com.google.code.gson:gson:2.9.0")
+    implementation("com.google.code.gson:gson:2.10")
 
     implementation("com.google.dagger:hilt-android:2.44.2")
     kapt("com.google.dagger:hilt-compiler:2.44.2")
@@ -55,6 +55,7 @@ dependencies {
     implementation("com.faltenreich:skeletonlayout:4.0.0")
 
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.4")
+    implementation("com.facebook.shimmer:shimmer:0.5.0")
 
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")

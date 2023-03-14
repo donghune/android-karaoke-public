@@ -10,14 +10,23 @@ interface MananaKaraokeService {
         DAILY("daily"), WEEKLY("weekly"), MONTHLY("monthly"),
     }
 
-    @GET("karaoke/song/{title}.json")
-    suspend fun searchByTitle(@Path("title") title: String): List<MananaSongResponse>
+    @GET("karaoke/song/{title}/{brand}.json")
+    suspend fun searchByTitle(
+        @Path("brand") brand: String = "tj",
+        @Path("title") title: String
+    ): List<MananaSongResponse>
 
-    @GET("karaoke/singer/{singer}.json")
-    suspend fun searchBySinger(@Path("singer") singer: String): List<MananaSongResponse>
+    @GET("karaoke/singer/{singer}/{brand}.json")
+    suspend fun searchBySinger(
+        @Path("brand") brand: String = "tj",
+        @Path("singer") singer: String
+    ): List<MananaSongResponse>
 
-    @GET("karaoke/no/{no}.json")
-    suspend fun searchByNo(@Path("no") no: String): List<MananaSongResponse>
+    @GET("karaoke/no/{no}/{brand}.json")
+    suspend fun searchByNo(
+        @Path("brand") brand: String = "tj",
+        @Path("no") no: String
+    ): List<MananaSongResponse>
 
     @GET("karaoke/popular/{brand}/{period}.json")
     suspend fun getPopularSongs(
