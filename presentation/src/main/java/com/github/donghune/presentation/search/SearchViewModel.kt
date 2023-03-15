@@ -2,6 +2,7 @@ package com.github.donghune.presentation.search
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.github.donghune.domain.entity.Song
 import com.github.donghune.domain.usecase.song.*
 import com.github.donghune.presentation.entity.SongModel
 import com.github.donghune.presentation.entity.toSongModel
@@ -41,16 +42,26 @@ class SearchViewModel @Inject constructor(
     }
 
     init {
+        loadLatestAndPopularitySongs()
+    }
+
+    fun loadLatestAndPopularitySongs() {
         viewModelScope.launch {
             val latestSongs = try {
-                getLatestSongsUseCase().map { it.toSongModel() }.subList(0, 5)
+                getLatestSongsUseCase()
+                    .map(Song::toSongModel)
+                    .subList(0, 5)
             } catch (e: Exception) {
                 emptyList()
             }
 
-            val popularitySongs = getPopularitySongsUseCase()
-                .map { SongModel(it.id, it.title, it.singer) }
-                .subList(0, 5)
+            val popularitySongs = try {
+                getPopularitySongsUseCase()
+                    .map(Song::toSongModel)
+                    .subList(0, 5)
+            } catch (e: Exception) {
+                emptyList()
+            }
 
             _uiState.update {
                 SearchUiState.InitLoad(
@@ -70,9 +81,7 @@ class SearchViewModel @Inject constructor(
             try {
                 val result = createFlow(searchType, keyword).map { SongModel(it) }
                 _uiState.update {
-                    SearchUiState.SearchResult(
-                        result
-                    )
+                    SearchUiState.SearchResult(result)
                 }
             } catch (e: Exception) {
                 e.printStackTrace()

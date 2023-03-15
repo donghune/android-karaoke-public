@@ -6,7 +6,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.view.isVisible
-import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.DividerItemDecoration
@@ -20,10 +19,11 @@ import com.github.donghune.presentation.dialog.PlayListSelectDialogViewModel
 import com.github.donghune.presentation.entity.PlayListModel
 import com.github.donghune.presentation.latest.LatestActivity
 import com.github.donghune.presentation.popularity.PopularityActivity
+import com.github.donghune.presentation.util.addTextChangeStateFlow
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.launch
-import com.github.donghune.presentation.search.SearchViewModel.SearchType as Type
+import kotlinx.coroutines.*
+import kotlinx.coroutines.flow.*
 
 @AndroidEntryPoint
 class SearchFragment : BaseFragment() {
@@ -57,6 +57,7 @@ class SearchFragment : BaseFragment() {
         return binding.root
     }
 
+    @OptIn(FlowPreview::class)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.recyclerLatestSong.apply {
@@ -98,6 +99,7 @@ class SearchFragment : BaseFragment() {
                         showSkeletonUi(false)
                         binding.recyclerSearchResults.isVisible = false
                         binding.layoutRecommend.isVisible = true
+                        binding.textSearchEmptyMessage.isVisible = false
                         latestAdapter.submitList(it.latestSongs)
                         popularityAdapter.submitList(it.popularitySongs)
                     }
@@ -159,12 +161,19 @@ class SearchFragment : BaseFragment() {
 
         binding.imageSearchType.setOnClickListener {
             viewModel.updateSearchType(viewModel.searchType.value.next())
-            searchSong(viewModel.searchType.value, binding.fieldSearch.text.toString())
+            viewModel.search(viewModel.searchType.value, binding.fieldSearch.text.toString())
         }
 
-        binding.fieldSearch.addTextChangedListener {
-            searchSong(viewModel.searchType.value, it.toString())
-        }
+        binding.fieldSearch.addTextChangeStateFlow()
+            .onEach {
+                if (it?.isEmpty() == true) {
+                    viewModel.loadLatestAndPopularitySongs()
+                }
+            }
+            .filter { !it.isNullOrEmpty() }
+            .debounce(500L)
+            .onEach { viewModel.search(viewModel.searchType.value, it.toString()) }
+            .launchIn(lifecycleScope)
 
         binding.textPopularityTitleViewAll.setOnClickListener {
             PopularityActivity.start(requireContext())
@@ -173,9 +182,6 @@ class SearchFragment : BaseFragment() {
         binding.textLatestTitleViewAll.setOnClickListener {
             LatestActivity.start(requireContext())
         }
-
-        binding.fieldSearch.setText("")
-        searchSong(viewModel.searchType.value, binding.fieldSearch.text.toString())
     }
 
     private fun showSkeletonUi(isVisible: Boolean) {
@@ -188,13 +194,6 @@ class SearchFragment : BaseFragment() {
             binding.sfLatestSong.stopShimmer()
             binding.sfPopularitySong.stopShimmer()
         }
-    }
-
-    private fun searchSong(searchType: Type, keyword: String) {
-        if (keyword.isEmpty()) {
-            return
-        }
-        viewModel.search(searchType, keyword)
     }
 
     companion object {
